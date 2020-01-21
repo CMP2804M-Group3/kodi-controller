@@ -1,0 +1,7 @@
+{
+  "name": "JS",
+  "version": "1.0.0",
+  "dependencies": {
+    "xmlhttprequest": "^1.8.0"
+  }
+}
