@@ -1,0 +1,8 @@
+C:\Users\44793\Documents\Programming\C#\kodiController\kodiController\bin\Debug\kodiController.exe
+C:\Users\44793\Documents\Programming\C#\kodiController\kodiController\bin\Debug\kodiController.pdb
+C:\Users\44793\Documents\Programming\C#\kodiController\kodiController\obj\Debug\kodiController.csprojAssemblyReference.cache
+C:\Users\44793\Documents\Programming\C#\kodiController\kodiController\obj\Debug\kodiController.exe
+C:\Users\44793\Documents\Programming\C#\kodiController\kodiController\obj\Debug\kodiController.pdb
+C:\Users\44793\Documents\Programming\C#\kodiController\kodiController\bin\Debug\Newtonsoft.Json.dll
+C:\Users\44793\Documents\Programming\C#\kodiController\kodiController\bin\Debug\Newtonsoft.Json.xml
+C:\Users\44793\Documents\Programming\C#\kodiController\kodiController\obj\Debug\kodiController.csproj.CopyComplete
