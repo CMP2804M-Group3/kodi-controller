@@ -1,82 +1,65 @@
-const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const XMLHttpRequest = require("request");
+const RPCVersion = "2.0"
 
 /**
  * Kodi Controller allows Playing, Pausing and more
  */
 module.exports = class Controller {
-    /**
-     * @param {string} ip The IP address that Kodi is on
-     * @param {number} port The port that Kodi is configured for (Default is 8080)
-     */
-    constructor(ip = "localhost", port = 8080) {
-        this.url = `http://${ip}:${port}/jsonrpc`;
-    }
+	/**
+	 * @param {string} ip The IP address that Kodi is on
+	 * @param {number} port The port that Kodi is configured for (Default is 8080)
+	 */
+	constructor(ip = "localhost", port = 8080) {
+		this.url = `http://${ip}:${port}/jsonrpc`;
+	}
 
-    /**
-     * Sends a request to Kodi with body as the body of the request
-     * @param {Object} body The body of the request
-     * @returns {Promise<string>}
-     */
-    async send_request(body) {
-        // Create the XHR request
-        const request = new XMLHttpRequest();
-        const url = this.url;
+	/**
+	 * Sends a request to Kodi with body as the body of the request, handles errors as needed
+	 * @param {Object} body The body of the request
+	 * @param {Function} callback Function called when request is finished with argumemnts of
+	 string (err), HTTP.IncomingMessage (response), string/Buffer (body)
+	 */
+	sendRequest(body, callback) {
+		const url = this.url;
+		request.post(url, {json: body})
+		.on("response", callback)
+		.on("error", err => {
+			console.log(`Something went wrong :( - ${err}\nRequest body: ${JSON.stringify(body)}`)
+		});
+	}
 
-        // Return it as a Promise
-        return new Promise(function(resolve, reject) {
-            request.onreadystatechange = function() {
-                // Only run if the request is complete
-                if (request.readyState !== 4) return;
+	/**
+	 * Gets the ID of the active player from Kodi, passes it to a callback with arguments
+	 * string (playerID)
+	 */
+	getActivePlayerID(callback) {
+		this.SendRequest({
+			"jsonrpc": RPCVersion,
+			"method": "Player.GetActivePlayers",
+			"id" : 1
+		}, (err, response) => {
+			if (err){
+				conosle.log("error: " + err);
+				return;
+			}
 
-                // Process the response
-                if (request.status >= 200 && request.status < 300) {
-                    // If successful
-                    resolve(JSON.parse(this.responseText));
-                } else {
-                    // If failed
-                    reject({status : request.status, statusText : request.statusText});
-                }
-            };
-            request.open("POST", url, true);
-            request.setRequestHeader('Content-Type',
-                                   'application/json; charset=utf-8');
-            request.send(JSON.stringify(body));
-        });
-    }
+			callback(data.result[0].playerid);
+		});
+	}
 
-    /**
-     * Gets the ID of the active player from Kodi
-     * @returns {Promise<number>}
-     */
-    async getActivePlayerID() {
-        let self = this; // Need pointer to this as nested promise function changes
-                         // reference
-
-        return new Promise(function(resolve, reject) {
-            self.send_request({
-                "jsonrpc" : "2.0",
-                "method" : "Player.GetActivePlayers",
-                "id" : 1
-            })
-            .then(data => { resolve(data["result"][0]["playerid"]); })
-            .catch(error => {
-                console.log("Something went wrong :(", error);
-                reject(error);
-            });
-        })
-    }
-
-    /**
-     * Plays kodi if paused and pauses if playing
-     */
-    playPause() {
-        this.getActivePlayerID().then(
-            player_id => {this.send_request({
-                "jsonrpc" : "2.0",
-                "method" : "Player.PlayPause",
-                "params" : {"playerid" : player_id},
-                "id" : 1})
-            .catch(error => { console.log("Error: ", error); })});
-      }
+	/**
+	 * Plays kodi if paused and pauses if playing
+	 */
+	playPause() {
+		this.GetActivePlayerID(playerID => {
+			this.SendRequest({
+				"jsonrpc": RPCVersion,
+				"method": "Player.PlayPause",
+				"params": {"playerid" : playerID},
+				"id" : 1
+			});
+		});
+	}
 };
+
 
