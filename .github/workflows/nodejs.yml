@@ -24,14 +24,15 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: npm install and build
-      run:
+      run: |
         cd KodiController
         npm install
         npm install mocha
         npm install nock
         npm install sinon
     - name: run tests
-      run:
+      run: |
+        cd KodiController
         ./node_modules/mocha/bin/mocha
       env:
         CI: true
