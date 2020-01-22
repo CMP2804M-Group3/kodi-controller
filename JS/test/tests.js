@@ -10,9 +10,9 @@ describe("controller", () => {
 			var c = new Controller();
 
 			nock("http://localhost:8080")
-			.post("/jsonrpc", {
-				jsonrpc: RPCVersion,
-				method: "Player.GetActivePlayers"
+			.post("/jsonrpc", (body) => {
+				var data = JSON.parse(body);
+				return data.jsonrpc == RPCVersion && data.method == "Player.GetActivePlayers";
 			})
 			.reply(200, `{"id":1,"jsonrpc":"2.0","result":[{"playerid":1337,"playertype":"internal","type":"video"}]}`);
 
