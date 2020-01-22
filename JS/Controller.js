@@ -1,6 +1,6 @@
-const XMLHttpRequest = require("request");
+const request = require("request");
 const RPCVersion = "2.0";
-const ID = "Joe Pitts";
+const ID = 1;
 
 /**
  * Kodi Controller allows Playing, Pausing and more
@@ -16,51 +16,59 @@ module.exports = class Controller {
 
 	/**
 	 * Sends a request to Kodi with body as the body of the request, handles errors as needed
-	 * @param {Object} body The body of the request
-	 * @param {Function} callback Function called when request is finished with argumemnts of
-	 * string (err), string (body)
+	 * @param {string} method The method we are calling
+	 * @param {Object} params The parameters for the method
+	 * @param {Function} callback Function called when request is finished with arguments of
+	 * 		string (err), string (body)
 	 */
 	sendRequest(method, params, callback) {
-		const url = this.url;
-		var data = "";
-
-		request.post(url, {json: {
+		let data = "";
+		let req = {
 			"jsonrpc": RPCVersion,
 			"method": method,
-			"params": params,
 			"id": ID
-		}})
-		.on("response", pkt => { data += pkt } )
+		};
+
+		if (params) { req.params = params; } // If params are supplied add them to the request
+
+		request.post(this.url, {json: req})
+		.on("response", (packet) => { 
+			packet.on("data", packetData => {
+				data += packetData;
+			});
+		})
 		.on("error", err => {
-			if (callback != null){
-				callback(err);
-			}
+			if (callback){ callback(err); }
 		})
 		.on("end", () => {
-			var err;
-			var result;
-
+			let err;
+			let result;
 			try {
-				var parsed = JSON.parse(data);
-				err = data.error;
-				result = data.result;
+				let parsed = JSON.parse(data);
+				err = parsed.error;
+				result = parsed.result;
 			} catch (e) {
 				err = e.error
 			}
 
-			if (callback != null){
-				callback(err);
+			if (callback){
+				callback(err, result);
 			}
+
 		});
 	}
 
 	/**
-	 * Gets the ID of the active player from Kodi, passes it to a callback with arguments
-	 * string (error), string (playerID)
+	 * Gets the ID of the active player from Kodi
+	 *  @param {Function} callback The callback function called with the params (err, data)
 	 */
 	getActivePlayerID(callback) {
 		this.sendRequest("Player.GetActivePlayers", null, (err, data) => {
-			callback(err, data[0].playerid);
+			if (!err){
+				callback(err, data[0].playerid);
+			} else {
+				callback(err);
+			}
 		});
 	}
 
@@ -70,9 +78,10 @@ module.exports = class Controller {
 	playPause() {
 		this.getActivePlayerID((err, playerID) => {
 			if (!err){
-				this.sendRequest("Player.PlayPause", {playerid: playerID});
+				this.sendRequest("Player.PlayPause", {playerId: playerID}, null);
+				console.log("INFO: Play / Pause successfully executed.");
 			} else {
-				console.log("something went wrong :(\n" + err);
+				console.log("ERROR: \n" + err);
 			}
 		});
 	}
