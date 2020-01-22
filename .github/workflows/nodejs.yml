@@ -30,7 +30,6 @@ jobs:
         npm run build --if-present
         npm install mocha
         npm install sinon
-        npm test
         ./node_modules/mocha/bin/mocha
       env:
         CI: true
