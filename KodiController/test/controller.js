@@ -102,7 +102,7 @@ describe("Controller", () => {
 
 			SetNockPlayerID();
 
-			c.skip((err, response) => {
+			c.goNext((err, response) => {
 				if (err || !response) done(err);
 				done();
 			});
@@ -121,7 +121,7 @@ describe("Controller", () => {
 
 			SetNockPlayerID();
 
-			c.goBack((err, response) => {
+			c.goPrevious((err, response) => {
 				if (err || !response) done(err);
 				done();
 			});

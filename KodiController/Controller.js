@@ -114,7 +114,7 @@ class Controller {
 	/**
 	 * Skips to next media
 	 */
-	skip(callback) {
+	goNext(callback) {
 		this.getActivePlayerID((err, playerID) => {
 			if (!callback) callback = function(){ }
 
@@ -130,7 +130,7 @@ class Controller {
 	/**
 	 * Goes to start or previous media
 	 */
-	goBack(callback) {
+	goPrevious(callback) {
 		this.getActivePlayerID((err, playerID) => {
 			if (!callback) callback = function(){ }
 			if (!err){
