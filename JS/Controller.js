@@ -19,7 +19,7 @@ class Controller {
 	 * Sends a request to Kodi with body as the body of the request, handles errors as needed
 	 * @param {string}  method The method we are calling
 	 * @param {Object} params The parameters for the method
-	 * @param {Function} callback Function called when request is finished with arguments of
+	 * @param {Function} ?callback Function called when request is finished with arguments of
 	 * 		string (err), string (body)
 	 */
 	sendRequest(method, params, callback) {
@@ -72,7 +72,7 @@ class Controller {
 	playPause() {
 		this.getActivePlayerID((err, playerID) => {
 			if (!err){
-				this.sendRequest("Player.PlayPause", {playerid: playerID}, null);
+				this.sendRequest("Player.PlayPause", {playerid: playerID});
 				console.log("INFO: Play / Pause successfully executed.");
 			} else {
 				console.log("ERROR: \n" + err);
