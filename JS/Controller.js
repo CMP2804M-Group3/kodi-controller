@@ -5,10 +5,11 @@ const ID = 1;
 /**
  * Kodi Controller allows Playing, Pausing and more
  */
-module.exports = class Controller {
+class Controller {
 	/**
 	 * @param {string} ip The IP address that Kodi is on
 	 * @param {number} port The port that Kodi is configured for (Default is 8080)
+	 * @constructor
 	 */
 	constructor(ip = "localhost", port = 8080) {
 		this.url = `http://${ip}:${port}/jsonrpc`;
@@ -16,26 +17,23 @@ module.exports = class Controller {
 
 	/**
 	 * Sends a request to Kodi with body as the body of the request, handles errors as needed
-	 * @param {string} method The method we are calling
+	 * @param {string}  method The method we are calling
 	 * @param {Object} params The parameters for the method
 	 * @param {Function} callback Function called when request is finished with arguments of
 	 * 		string (err), string (body)
 	 */
 	sendRequest(method, params, callback) {
 		let data = "";
-		let req = {
+		let body = {
 			"jsonrpc": RPCVersion,
 			"method": method,
 			"id": ID
 		};
+		if (params) { body.params = params; } // If params are supplied add them to the request
 
-		if (params) { req.params = params; } // If params are supplied add them to the request
-
-		request.post(this.url, {json: req})
+		request.post(this.url, {json: body})
 		.on("response", (packet) => { 
-			packet.on("data", packetData => {
-				data += packetData;
-			});
+			packet.on("data", packetData => { data += packetData; });
 		})
 		.on("error", err => {
 			if (callback){ callback(err); }
@@ -47,13 +45,9 @@ module.exports = class Controller {
 				let parsed = JSON.parse(data);
 				err = parsed.error;
 				result = parsed.result;
-			} catch (e) {
-				err = e.error
-			}
+			} catch (e) { err = e.error; }
 
-			if (callback){
-				callback(err, result);
-			}
+			if (callback){ callback(err, result); }
 
 		});
 	}
@@ -78,13 +72,15 @@ module.exports = class Controller {
 	playPause() {
 		this.getActivePlayerID((err, playerID) => {
 			if (!err){
-				this.sendRequest("Player.PlayPause", {playerId: playerID}, null);
+				this.sendRequest("Player.PlayPause", {playerid: playerID}, null);
 				console.log("INFO: Play / Pause successfully executed.");
 			} else {
 				console.log("ERROR: \n" + err);
 			}
 		});
 	}
-};
+}
+
+module.exports = Controller;
 
 
