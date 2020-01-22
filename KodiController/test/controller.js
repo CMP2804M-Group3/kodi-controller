@@ -5,8 +5,6 @@ const assert = require("assert"),
 
 const RPCVersion = "2.0";
 
-const oldLog = console.log;
-
 function SetNockPlayerID(){
 	return nock("http://localhost:8080")
 	.post("/jsonrpc", (body) => {
@@ -38,7 +36,6 @@ describe("Controller", () => {
 	describe("playPause", () => {
 		it("should not return an error", (done) => {
 			let c = new Controller();
-			let spy = sinon.spy(console, "log");
 
 			nock("http://localhost:8080")
 			.post("/jsonrpc", (body) => {
@@ -58,7 +55,7 @@ describe("Controller", () => {
 	describe("play", () => {
 		it("should not return an error", (done) => {
 			let c = new Controller();
-			let spy = sinon.spy(console, "log");
+
 			nock("http://localhost:8080")
 			.post("/jsonrpc", (body) => {
 				return body.jsonrpc === RPCVersion && body.method === "Player.PlayPause";
@@ -77,7 +74,7 @@ describe("Controller", () => {
 	describe("pause", () => {
 		it("should not return an error", (done) => {
 			let c = new Controller();
-			let spy = sinon.spy(console, "log");
+
 			nock("http://localhost:8080")
 			.post("/jsonrpc", (body) => {
 				return body.jsonrpc === RPCVersion && body.method === "Player.PlayPause";
