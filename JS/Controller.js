@@ -1,5 +1,6 @@
 const XMLHttpRequest = require("request");
-const RPCVersion = "2.0"
+const RPCVersion = "2.0";
+const ID = "Joe Pitts";
 
 /**
  * Kodi Controller allows Playing, Pausing and more
@@ -17,33 +18,49 @@ module.exports = class Controller {
 	 * Sends a request to Kodi with body as the body of the request, handles errors as needed
 	 * @param {Object} body The body of the request
 	 * @param {Function} callback Function called when request is finished with argumemnts of
-	 string (err), HTTP.IncomingMessage (response), string/Buffer (body)
+	 * string (err), string (body)
 	 */
-	sendRequest(body, callback) {
+	sendRequest(method, params, callback) {
 		const url = this.url;
-		request.post(url, {json: body})
-		.on("response", callback)
+		var data = "";
+
+		request.post(url, {json: {
+			"jsonrpc": RPCVersion,
+			"method": method,
+			"params": params,
+			"id": ID
+		}})
+		.on("response", pkt => { data += pkt } )
 		.on("error", err => {
-			console.log(`Something went wrong :( - ${err}\nRequest body: ${JSON.stringify(body)}`)
+			if (callback != null){
+				callback(err);
+			}
+		})
+		.on("end", () => {
+			var err;
+			var result;
+
+			try {
+				var parsed = JSON.parse(data);
+				err = data.error;
+				result = data.result;
+			} catch (e) {
+				err = e.error
+			}
+
+			if (callback != null){
+				callback(err);
+			}
 		});
 	}
 
 	/**
 	 * Gets the ID of the active player from Kodi, passes it to a callback with arguments
-	 * string (playerID)
+	 * string (error), string (playerID)
 	 */
 	getActivePlayerID(callback) {
-		this.sendRequest({
-			"jsonrpc": RPCVersion,
-			"method": "Player.GetActivePlayers",
-			"id" : 1
-		}, (err, response) => {
-			if (err){
-				conosle.log("error: " + err);
-				return;
-			}
-
-			callback(data.result[0].playerid);
+		this.sendRequest("Player.GetActivePlayers", null, (err, data) => {
+			callback(err, data[0].playerid);
 		});
 	}
 
@@ -51,13 +68,12 @@ module.exports = class Controller {
 	 * Plays kodi if paused and pauses if playing
 	 */
 	playPause() {
-		this.getActivePlayerID(playerID => {
-			this.sendRequest({
-				"jsonrpc": RPCVersion,
-				"method": "Player.PlayPause",
-				"params": {"playerid" : playerID},
-				"id" : 1
-			});
+		this.getActivePlayerID((err, playerID) => {
+			if (!err){
+				this.sendRequest("Player.PlayPause", {playerid: playerID});
+			} else {
+				console.log("something went wrong :(\n" + err);
+			}
 		});
 	}
 };
