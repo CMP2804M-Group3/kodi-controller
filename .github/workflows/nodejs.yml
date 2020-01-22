@@ -29,6 +29,7 @@ jobs:
         npm install
         npm install mocha
         npm install nock
+        npm install sinon
         ./node_modules/mocha/bin/mocha
       env:
         CI: true

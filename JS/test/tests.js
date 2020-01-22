@@ -1,8 +1,11 @@
 var assert = require("assert"),
 	nock = require("nock"),
+	sinon = require("sinon"),
 	Controller = require("../Controller.js");
 
 const RPCVersion = "2.0";
+
+var oldLog = console.log;
 
 describe("Controller", () => {
 	describe("getActivePlayerID", () => {
@@ -11,8 +14,7 @@ describe("Controller", () => {
 
 			nock("http://localhost:8080")
 			.post("/jsonrpc", (body) => {
-				var data = JSON.parse(body);
-				return data.jsonrpc == RPCVersion && data.method == "Player.GetActivePlayers";
+				return body.jsonrpc == RPCVersion && body.method == "Player.GetActivePlayers";
 			})
 			.reply(200, `{"id":1,"jsonrpc":"2.0","result":[{"playerid":1337,"playertype":"internal","type":"video"}]}`);
 
@@ -25,15 +27,24 @@ describe("Controller", () => {
 	});
 
 	describe("playPause", () => {
-		it("should silently make the api call w/o error", (done) => {
+		it("should report the play/pause was executed", (done) => {
 			var c = new Controller();
+			var spy = sinon.spy(console, "log");
 
 			nock("http://localhost:8080")
 			.post("/jsonrpc", (body) => {
 				var data = JSON.parse(body);
 				return data.jsonrpc == RPCVersion && data.method == "Player.PlayPause";
 			})
-			.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":0}}`)
+			.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":0}}`);
+
+			c.playPause();
+
+			// should probably rework this test
+			setTimeout(() => {
+				assert(spy.getCall(-1), "INFO: Play / Pause successfully executed.");
+				done();
+			}, 100);
 		});
-	}
+	});
 });
