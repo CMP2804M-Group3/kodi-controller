@@ -26,8 +26,10 @@ jobs:
     - name: npm install, build, and test
       run: |
         cd JS
-        npm ci
+        npm install
         npm run build --if-present
+        npm install mocha
+        npm install sinon
         npm test
       env:
         CI: true
