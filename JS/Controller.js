@@ -33,7 +33,7 @@ module.exports = class Controller {
 	 * string (playerID)
 	 */
 	getActivePlayerID(callback) {
-		this.SendRequest({
+		this.sendRequest({
 			"jsonrpc": RPCVersion,
 			"method": "Player.GetActivePlayers",
 			"id" : 1
@@ -51,8 +51,8 @@ module.exports = class Controller {
 	 * Plays kodi if paused and pauses if playing
 	 */
 	playPause() {
-		this.GetActivePlayerID(playerID => {
-			this.SendRequest({
+		this.getActivePlayerID(playerID => {
+			this.sendRequest({
 				"jsonrpc": RPCVersion,
 				"method": "Player.PlayPause",
 				"params": {"playerid" : playerID},
