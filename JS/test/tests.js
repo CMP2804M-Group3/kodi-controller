@@ -11,8 +11,7 @@ describe("controller", () => {
 
 			nock("http://localhost:8080")
 			.post("/jsonrpc", (body) => {
-				var data = JSON.parse(body);
-				return data.jsonrpc == RPCVersion && data.method == "Player.GetActivePlayers";
+				return body.jsonrpc == RPCVersion && body.method == "Player.GetActivePlayers";
 			})
 			.reply(200, `{"id":1,"jsonrpc":"2.0","result":[{"playerid":1337,"playertype":"internal","type":"video"}]}`);
 
