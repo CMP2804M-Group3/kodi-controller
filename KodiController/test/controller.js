@@ -115,7 +115,7 @@ describe("Controller", () => {
 
 			nock("http://localhost:8080")
 				.post("/jsonrpc", (body) => {
-					return body.jsonrpc === RPCVersion && body.method === "Player.GoBack";
+					return body.jsonrpc === RPCVersion && body.method === "Player.GoPrevious";
 				})
 				.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":0}}`);
 
