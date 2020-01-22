@@ -119,7 +119,7 @@ class Controller {
 			if (!callback) callback = function(){ }
 
 			if (!err){
-				this.sendRequest("Player.GoNext", {playerid: playerID});
+				this.sendRequest("Player.GoNext", {playerid: playerID}, callback);
 				console.log("INFO: Skipped successfully.");
 			} else {
 				callback(err);
@@ -134,7 +134,7 @@ class Controller {
 		this.getActivePlayerID((err, playerID) => {
 			if (!callback) callback = function(){ }
 			if (!err){
-				this.sendRequest("Player.GoPrevious", {playerid: playerID});
+				this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback);
 				console.log("INFO: Went back successfully.");
 			} else {
 				callback(err);
