@@ -28,7 +28,7 @@ jobs:
         cd JS
         npm install
         npm install mocha
-        npm install sinon
+        npm install nock
         ./node_modules/mocha/bin/mocha
       env:
         CI: true
