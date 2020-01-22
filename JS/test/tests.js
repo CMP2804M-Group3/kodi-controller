@@ -7,16 +7,25 @@ const RPCVersion = "2.0";
 
 var oldLog = console.log;
 
+function SetNockPlayerID(){
+	return nock("http://localhost:8080")
+	.post("/jsonrpc", (body) => {
+		return body.jsonrpc == RPCVersion && body.method == "Player.GetActivePlayers";
+	})
+	.reply(200, `{"id":1,"jsonrpc":"2.0","result":[{"playerid":1337,"playertype":"internal","type":"video"}]}`);
+}
+
 describe("Controller", () => {
+	after(function(){
+		nock.restore();
+		nock.cleanAll();
+	});
+
 	describe("getActivePlayerID", () => {
 		it("should return the id of the player", (done) => {
 			var c = new Controller();
 
-			nock("http://localhost:8080")
-			.post("/jsonrpc", (body) => {
-				return body.jsonrpc == RPCVersion && body.method == "Player.GetActivePlayers";
-			})
-			.reply(200, `{"id":1,"jsonrpc":"2.0","result":[{"playerid":1337,"playertype":"internal","type":"video"}]}`);
+			SetNockPlayerID();
 
 			c.getActivePlayerID((err, playerID) => {
 				if (err) done(err);
@@ -36,6 +45,8 @@ describe("Controller", () => {
 				return body.jsonrpc == RPCVersion && body.method == "Player.PlayPause";
 			})
 			.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":0}}`);
+
+			SetNockPlayerID();
 
 			c.playPause();
 
