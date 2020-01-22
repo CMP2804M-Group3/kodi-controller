@@ -2,10 +2,10 @@ name: Node CI
 
 on:
   push:
-    branches: 
+    branches:
       - master
   pull_request:
-    branches: 
+    branches:
       - master
 
 jobs:
@@ -23,13 +23,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install, build, and test
+    - name: npm install and build
       run: |
         cd KodiController
         npm install
         npm install mocha
         npm install nock
         npm install sinon
+    - name: run tests
+      run: |
+        cd KodiController
         ./node_modules/mocha/bin/mocha
       env:
         CI: true
