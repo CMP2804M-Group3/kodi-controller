@@ -36,6 +36,11 @@ describe("Controller", () => {
 	});
 
 	describe("playPause", () => {
+
+		after(function () {
+			console.log.restore();
+		});
+
 		it("should report the play/pause was executed", (done) => {
 			let c = new Controller();
 			let spy = sinon.spy(console, "log");
@@ -59,10 +64,13 @@ describe("Controller", () => {
 	});
 
 	describe("play", () => {
+
+		after(function () {
+			console.log.restore();
+		});
 		it("should report the play command was executed", (done) => {
 			let c = new Controller();
 			let spy = sinon.spy(console, "log");
-
 			nock("http://localhost:8080")
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Player.PlayPause";
@@ -82,10 +90,12 @@ describe("Controller", () => {
 	});
 
 	describe("pause", () => {
+		after(function () {
+			console.log.restore();
+		});
 		it("should report the pause command was executed", (done) => {
 			let c = new Controller();
 			let spy = sinon.spy(console, "log");
-
 			nock("http://localhost:8080")
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Player.PlayPause";
