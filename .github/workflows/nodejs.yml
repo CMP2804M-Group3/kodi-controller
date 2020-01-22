@@ -31,5 +31,6 @@ jobs:
         npm install mocha
         npm install sinon
         npm test
+        ./node_modules/mocha/bin/mocha
       env:
         CI: true
