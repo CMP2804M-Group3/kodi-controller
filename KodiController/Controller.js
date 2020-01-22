@@ -81,7 +81,7 @@ class Controller {
 	}
 
 	/**
-	 * Pauses kodi
+	 * Pauses Kodi
 	 */
 	pause() {
 		this.getActivePlayerID((err, playerID) => {
@@ -95,13 +95,41 @@ class Controller {
 	}
 
 	/**
-	 * Plays kodi
+	 * Plays Kodi
 	 */
 	play() {
 		this.getActivePlayerID((err, playerID) => {
 			if (!err){
 				this.sendRequest("Player.PlayPause", {playerid: playerID, play: true});
 				console.log("INFO: Played successfully.");
+			} else {
+				console.log("ERROR: \n" + err);
+			}
+		});
+	}
+
+	/**
+	 * Skips to next media
+	 */
+	skip() {
+		this.getActivePlayerID((err, playerID) => {
+			if (!err){
+				this.sendRequest("Player.GoNext", {playerid: playerID});
+				console.log("INFO: Skipped successfully.");
+			} else {
+				console.log("ERROR: \n" + err);
+			}
+		});
+	}
+
+	/**
+	 * Goes to start or previous media
+	 */
+	goBack() {
+		this.getActivePlayerID((err, playerID) => {
+			if (!err){
+				this.sendRequest("Player.GoNext", {playerid: playerID});
+				console.log("INFO: Skipped successfully.");
 			} else {
 				console.log("ERROR: \n" + err);
 			}
