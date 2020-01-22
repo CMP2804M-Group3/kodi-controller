@@ -1,6 +1,6 @@
 var assert = require("assert"),
 	sinon = require("nock"),
-	Controller = require("./Controller.js");
+	Controller = require("../Controller.js");
 
 const RPCVersion = "2.0";
 
