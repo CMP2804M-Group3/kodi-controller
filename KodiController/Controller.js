@@ -99,7 +99,7 @@ class Controller {
 	/**
 	 * Plays kodi
 	 */
-	play(calllback) {
+	play(callback) {
 		this.getActivePlayerID((err, playerID) => {
 			if (!callback) callback = function(){ }
 
