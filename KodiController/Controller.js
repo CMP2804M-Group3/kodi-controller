@@ -69,13 +69,13 @@ class Controller {
 	/**
 	 * Plays kodi if paused and pauses if playing
 	 */
-	playPause() {
+	playPause(callback) {
 		this.getActivePlayerID((err, playerID) => {
 			if (!err){
-				this.sendRequest("Player.PlayPause", {playerid: playerID});
-				console.log("INFO: Play / Pause successfully executed.");
+				this.sendRequest("Player.PlayPause", {playerid: playerID}, callback);
+				console.log("INFO: Play / Pause successfully executed."); // maybe move this line somewhere else?
 			} else {
-				console.log("ERROR: \n" + err);
+				callback(err);
 			}
 		});
 	}
@@ -86,10 +86,10 @@ class Controller {
 	pause() {
 		this.getActivePlayerID((err, playerID) => {
 			if (!err){
-				this.sendRequest("Player.PlayPause", {playerid: playerID, play: false});
+				this.sendRequest("Player.PlayPause", {playerid: playerID, play: false}, callback);
 				console.log("INFO: Paused successfully.");
 			} else {
-				console.log("ERROR: \n" + err);
+				callback(err);
 			}
 		});
 	}
@@ -100,10 +100,10 @@ class Controller {
 	play() {
 		this.getActivePlayerID((err, playerID) => {
 			if (!err){
-				this.sendRequest("Player.PlayPause", {playerid: playerID, play: true});
+				this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback);
 				console.log("INFO: Played successfully.");
 			} else {
-				console.log("ERROR: \n" + err);
+				callback(err);
 			}
 		});
 	}
