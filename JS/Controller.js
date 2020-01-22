@@ -73,7 +73,7 @@ class Controller {
 		this.getActivePlayerID((err, playerID) => {
 			if (!err){
 				this.sendRequest("Player.PlayPause", {playerid: playerID});
-				console.log("INFO: Play / Pause successfully executed.");
+				console.log("INFO: Play / Pause successfully executed bad pull request.");
 			} else {
 				console.log("ERROR: \n" + err);
 			}
