@@ -83,8 +83,10 @@ class Controller {
 	/**
 	 * Pauses kodi
 	 */
-	pause() {
+	pause(callback) {
 		this.getActivePlayerID((err, playerID) => {
+			if (!callback) callback = function(){ }
+
 			if (!err){
 				this.sendRequest("Player.PlayPause", {playerid: playerID, play: false}, callback);
 				console.log("INFO: Paused successfully.");
@@ -97,8 +99,10 @@ class Controller {
 	/**
 	 * Plays kodi
 	 */
-	play() {
+	play(calllback) {
 		this.getActivePlayerID((err, playerID) => {
+			if (!callback) callback = function(){ }
+
 			if (!err){
 				this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback);
 				console.log("INFO: Played successfully.");
