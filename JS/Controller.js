@@ -19,7 +19,7 @@ module.exports = class Controller {
 	 * @param {Function} callback Function called when request is finished with argumemnts of
 	 string (err), HTTP.IncomingMessage (response), string/Buffer (body)
 	 */
-	SendRequest(body, callback) {
+	sendRequest(body, callback) {
 		const url = this.url;
 		request.post(url, {json: body})
 		.on("response", callback)
@@ -32,7 +32,7 @@ module.exports = class Controller {
 	 * Gets the ID of the active player from Kodi, passes it to a callback with arguments
 	 * string (playerID)
 	 */
-	GetActivePlayerID(callback) {
+	getActivePlayerID(callback) {
 		this.SendRequest({
 			"jsonrpc": RPCVersion,
 			"method": "Player.GetActivePlayers",
@@ -50,7 +50,7 @@ module.exports = class Controller {
 	/**
 	 * Plays kodi if paused and pauses if playing
 	 */
-	PlayPause() {
+	playPause() {
 		this.GetActivePlayerID(playerID => {
 			this.SendRequest({
 				"jsonrpc": RPCVersion,
