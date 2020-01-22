@@ -32,6 +32,7 @@ jobs:
         npm install sinon
     - name: run tests
       run: |
+        cd KodiController
         ./node_modules/mocha/bin/mocha
       env:
         CI: true
