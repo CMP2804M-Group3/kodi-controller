@@ -33,8 +33,7 @@ describe("Controller", () => {
 
 			nock("http://localhost:8080")
 			.post("/jsonrpc", (body) => {
-				var data = JSON.parse(body);
-				return data.jsonrpc == RPCVersion && data.method == "Player.PlayPause";
+				return body.jsonrpc == RPCVersion && body.method == "Player.PlayPause";
 			})
 			.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":0}}`);
 
