@@ -111,6 +111,36 @@ class Controller {
 			}
 		});
 	}
+	/**
+	 * Skips to next media
+	 */
+	goNext(callback) {
+		this.getActivePlayerID((err, playerID) => {
+			if (!callback) callback = function(){ }
+
+			if (!err){
+				this.sendRequest("Player.GoNext", {playerid: playerID}, callback);
+				console.log("INFO: Skipped successfully.");
+			} else {
+				callback(err);
+			}
+		});
+	}
+
+	/**
+	 * Goes to start or previous media
+	 */
+	goPrevious(callback) {
+		this.getActivePlayerID((err, playerID) => {
+			if (!callback) callback = function(){ }
+			if (!err){
+				this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback);
+				console.log("INFO: Went back successfully.");
+			} else {
+				callback(err);
+			}
+		});
+}
 }
 
 module.exports = Controller;
