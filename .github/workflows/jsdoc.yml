@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v1
@@ -23,16 +23,17 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install and build
+    - name: Generate JSDoc
       run: |
-        cd KodiController
-        npm install
-        npm install mocha
-        npm install nock
-        npm install sinon
-    - name: run tests
+        npm install jsdoc
+        ./node_modules/.bin/jsdoc -r ./ docs
+    - name: Commit files
       run: |
-        cd KodiController
-        ./node_modules/mocha/bin/mocha
-      env:
-        CI: true
+        git add docs
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "GitHub Actions: Update JSDoc" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
