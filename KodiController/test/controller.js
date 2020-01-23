@@ -49,7 +49,6 @@ describe("Controller", () => {
 
 			c.getVolume((err, volume) => {
 				if (err || !volume) done(err);
-				console.log("THE VOLUME IS", err);
 				assert.equal(24, volume);
 				done();
 			});
