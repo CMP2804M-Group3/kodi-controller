@@ -19,7 +19,7 @@ class Controller {
 	 * Sends a request to Kodi with body as the body of the request, handles errors as needed
 	 * @param {string}  method The method we are calling
 	 * @param {Object} params The parameters for the method
-	 * @param {Function} ?callback Function called when request is finished with arguments of
+	 * @param {Function} callback? Function called when request is finished with arguments of
 	 * 		string (err), string (body)
 	 */
 	sendRequest(method, params, callback) {
@@ -30,7 +30,6 @@ class Controller {
 			"id": ID
 		};
 		if (params) { body.params = params; } // If params are supplied add them to the request
-
 		request.post(this.url, {json: body})
 		.on("response", (packet) => { 
 			packet.on("data", packetData => { data += packetData; });
@@ -53,94 +52,96 @@ class Controller {
 	}
 
 	/**
+	 * Gets the current players volume
+	 * @param {Function} callback The callback function called with the params (err, data) with data being the volume
+	 */
+	getVolume(callback) {
+		if (!callback) {console.error("Callback must be supplied for getVolume!"); return;}
+		this.sendRequest("Application.GetProperties", {"properties": ["volume"]}, (err, data) => {
+			if(err) { callback(err); }
+			else { callback(err, data.volume); }
+		});
+	}
+
+	/**
 	 * Gets the ID of the active player from Kodi
-	 *  @param {Function} callback The callback function called with the params (err, data)
+	 *  @param {Function} callback The callback function called with the params (err, data) with data being the ID
 	 */
 	getActivePlayerID(callback) {
+		if (!callback) {console.error("Callback must be supplied for getActivePlayerID!"); return;}
 		this.sendRequest("Player.GetActivePlayers", null, (err, data) => {
-			if (!err){
-				callback(err, data[0].playerid);
-			} else {
-				callback(err);
-			}
+			if (err){ callback(err); }
+			else{ callback(err, data[0].playerid); }
 		});
 	}
 
 	/**
 	 * Plays kodi if paused and pauses if playing
+	 * @param {Function} callback The callback function called with the err
 	 */
-	playPause(callback) {
+	playPause(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
-			if (!err){
+			if (err){ callback(err); }
+			else{
 				this.sendRequest("Player.PlayPause", {playerid: playerID}, callback);
 				console.log("INFO: Play / Pause successfully executed."); // maybe move this line somewhere else?
-			} else {
-				callback(err);
 			}
 		});
 	}
 
 	/**
 	 * Pauses kodi
+	 * @param {Function} callback The callback function called with the err
 	 */
-	pause(callback) {
+	pause(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
-			if (!callback) callback = function(){ }
-
-			if (!err){
+			if (err){ callback(err); }
+			else{
 				this.sendRequest("Player.PlayPause", {playerid: playerID, play: false}, callback);
 				console.log("INFO: Paused successfully.");
-			} else {
-				callback(err);
 			}
 		});
 	}
 
 	/**
 	 * Plays kodi
+	 * @param {Function} callback The callback function called with the err
 	 */
-	play(callback) {
+	play(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
-			if (!callback) callback = function(){ }
-
-			if (!err){
+			if (err){ callback(err); }
+			else {
 				this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback);
 				console.log("INFO: Played successfully.");
-			} else {
-				callback(err);
 			}
 		});
 	}
 	/**
 	 * Skips to next media
 	 */
-	goNext(callback) {
+	goNext(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
-			if (!callback) callback = function(){ }
-
-			if (!err){
+			if (err){ callback(err); }
+			else {
 				this.sendRequest("Player.GoNext", {playerid: playerID}, callback);
 				console.log("INFO: Skipped successfully.");
-			} else {
-				callback(err);
 			}
 		});
 	}
 
 	/**
 	 * Goes to start or previous media
+	 * @param {Function} callback The callback function called with the err
 	 */
-	goPrevious(callback) {
+	goPrevious(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
-			if (!callback) callback = function(){ }
-			if (!err){
+			if (err){ callback(err);}
+			else{
 				this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback);
 				console.log("INFO: Went back successfully.");
-			} else {
-				callback(err);
 			}
 		});
-}
+	}
 }
 
 module.exports = Controller;

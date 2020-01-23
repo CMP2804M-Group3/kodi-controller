@@ -1,6 +1,33 @@
 {
-  "name": "JS",
-  "version": "1.0.0",
+  "name": "kodi-controller",
+  "version": "1.0.2",
+  "description": "Control Kodi from JavaScript!",
+  "license": "GPL-3.0",
+  "repository": "github:CMP2804M-Group3/kodi-controller",
+  "main": "Controller.js",
+  "homepage": "https://cmp2804m-group3.github.io/kodi-controller",
+  "contributors": [
+    {
+      "name": "Joseph Pitts",
+      "email": "joepitts@gmail.com",
+      "url": "https://www.joepitts.co.uk"
+    },
+    {
+      "name": "Harry Pollard",
+      "url": "https://meharryp.xyz"
+    },
+    {
+      "name": "Ben Clarke"
+    }
+  ],
+  "keywords": [
+    "kodi",
+    "xbmc",
+    "controll",
+    "controller",
+    "callback",
+    "media"
+  ],
   "dependencies": {
     "request": "^2.88.0"
   },

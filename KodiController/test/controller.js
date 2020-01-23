@@ -13,6 +13,14 @@ function SetNockPlayerID(){
 	.reply(200, `{"id":1,"jsonrpc":"2.0","result":[{"playerid":1337,"playertype":"internal","type":"video"}]}`);
 }
 
+function SetNockVolume(){
+	return nock("http://localhost:8080")
+		.post("/jsonrpc", (body) => {
+			return body.jsonrpc === RPCVersion && body.method === "Application.GetProperties";
+		})
+		.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"volume":24}}`);
+}
+
 describe("Controller", () => {
 	after(function(){
 		nock.restore();
@@ -28,6 +36,20 @@ describe("Controller", () => {
 			c.getActivePlayerID((err, playerID) => {
 				if (err || !playerID) done(err);
 				assert.equal(1337, playerID);
+				done();
+			});
+		});
+	});
+
+	describe("getVolume", () => {
+		it("should return the volume of the player", (done) => {
+			let c = new Controller();
+
+			SetNockVolume();
+
+			c.getVolume((err, volume) => {
+				if (err || !volume) done(err);
+				assert.equal(24, volume);
 				done();
 			});
 		});
