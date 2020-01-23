@@ -15,11 +15,11 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
       - name: npm install
-      - run: |
+        run: |
           cd KodiController
           yarn install
       - name: run tests
-      - run: |
+        run: |
           npm publish --access public
-          env:
-            NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
