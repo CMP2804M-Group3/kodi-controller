@@ -150,4 +150,44 @@ describe("Controller", () => {
 		});
 	});
 
+	describe("volumeDown", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Application.SetVolume";
+				})
+				.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"volume":19}}`);
+
+			SetNockVolume();
+
+			c.volumeDown((err, volume) => {
+				if (err || !volume) done(err);
+				assert.equal(19, volume.volume);
+				done();
+			});
+		});
+	});
+
+	describe("volumeUp", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Application.SetVolume";
+				})
+				.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"volume":29}}`);
+
+			SetNockVolume();
+
+			c.volumeUp((err, volume) => {
+				if (err || !volume) done(err);
+				assert.equal(29, volume.volume);
+				done();
+			});
+		});
+	});
+
 });

@@ -80,12 +80,10 @@ class Controller {
 	 * @param {Function} callback The callback function called with the err
 	 */
 	playPause(callback = function() {}) {
+		console.log("INFO: Called playPause.");
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); }
-			else{
-				this.sendRequest("Player.PlayPause", {playerid: playerID}, callback);
-				console.log("INFO: Play / Pause successfully executed."); // maybe move this line somewhere else?
-			}
+			else{ this.sendRequest("Player.PlayPause", {playerid: playerID}, callback); }
 		});
 	}
 
@@ -94,12 +92,10 @@ class Controller {
 	 * @param {Function} callback The callback function called with the err
 	 */
 	pause(callback = function() {}) {
+		console.log("INFO: Called pause.");
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); }
-			else{
-				this.sendRequest("Player.PlayPause", {playerid: playerID, play: false}, callback);
-				console.log("INFO: Paused successfully.");
-			}
+			else{ this.sendRequest("Player.PlayPause", {playerid: playerID, play: false}, callback); }
 		});
 	}
 
@@ -108,24 +104,21 @@ class Controller {
 	 * @param {Function} callback The callback function called with the err
 	 */
 	play(callback = function() {}) {
+		console.log("INFO: Called play.");
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); }
-			else {
-				this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback);
-				console.log("INFO: Played successfully.");
-			}
+			else { this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback); }
 		});
 	}
 	/**
 	 * Skips to next media
+	 * @param {Function} callback The callback function called with the err
 	 */
 	goNext(callback = function() {}) {
+		console.log("INFO: Called goNext.");
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); }
-			else {
-				this.sendRequest("Player.GoNext", {playerid: playerID}, callback);
-				console.log("INFO: Skipped successfully.");
-			}
+			else { this.sendRequest("Player.GoNext", {playerid: playerID}, callback); }
 		});
 	}
 
@@ -134,14 +127,49 @@ class Controller {
 	 * @param {Function} callback The callback function called with the err
 	 */
 	goPrevious(callback = function() {}) {
+		console.log("INFO: Called goPrevious.");
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err);}
-			else{
-				this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback);
-				console.log("INFO: Went back successfully.");
-			}
+			else{ this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback); }
 		});
 	}
+
+	/**
+	 * Increases the volume
+	 * @param {Function} callback The callback function called with the err
+	 * @param {number} volumeChangeBy How much to increase the volume by
+	 */
+	volumeUp(callback = function() {}, volumeChangeBy = 5) {
+		console.log("INFO: Called volumeUp.");
+		if(volumeChangeBy < 0) { callback("volumeChangeBy must be positive!");}
+		else {
+			this.getVolume((err, currentVolume) => {
+				if (err){ callback(err); }
+				else {
+					this.sendRequest("Application.SetVolume", {"volume" : currentVolume + volumeChangeBy}, callback);
+				}
+			});
+		}
+	}
+
+	/**
+	 * Decreases the volume
+	 * @param {Function} callback The callback function called with the err
+	 * @param {number} volumeChangeBy How much to decrease the volume by
+	 */
+	volumeDown(callback = function() {}, volumeChangeBy = 5) {
+		console.log("INFO: Called volumeDown.");
+		if(volumeChangeBy < 0) { callback("volumeChangeBy must be positive!");}
+		else {
+			this.getVolume((err, currentVolume) => {
+				if (err){ callback(err); }
+				else {
+					this.sendRequest("Application.SetVolume", {"volume" : currentVolume - volumeChangeBy}, callback);
+				}
+			});
+		}
+	}
+
 }
 
 module.exports = Controller;
