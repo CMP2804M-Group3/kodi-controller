@@ -17,13 +17,14 @@
       "url": "https://meharryp.xyz"
     },
     {
-      "name": "Ben Clarke"
+      "name": "Ben Clarke",
+      "email": "benjamin.clarke@fizzyworms.co.uk"
     }
   ],
   "keywords": [
     "kodi",
     "xbmc",
-    "controll",
+    "control",
     "controller",
     "callback",
     "media"
