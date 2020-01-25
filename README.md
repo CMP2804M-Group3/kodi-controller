@@ -2,7 +2,6 @@
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CMP2804M-Group3/kodi-controller/Node%20CI)
 [![npm](https://img.shields.io/npm/v/kodi-controller)](https://www.npmjs.com/package/kodi-controller)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-GNU G
 
 Kodi Controller is a callback driven package for controlling Kodi from javascript. 
 
