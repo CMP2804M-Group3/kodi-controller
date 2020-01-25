@@ -23,14 +23,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm install and build
       run: |
-        cd src
         npm install
         npm install mocha
         npm install nock
         npm install sinon
     - name: run tests
       run: |
-        cd src
         ./node_modules/mocha/bin/mocha
       env:
         CI: true
