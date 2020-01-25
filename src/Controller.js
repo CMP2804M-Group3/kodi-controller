@@ -77,7 +77,7 @@ class Controller {
 
 	/**
 	 * Plays kodi if paused and pauses if playing
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 */
 	playPause(callback = function() {}) {
 		console.log("INFO: Called playPause.");
@@ -89,7 +89,7 @@ class Controller {
 
 	/**
 	 * Pauses kodi
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 */
 	pause(callback = function() {}) {
 		console.log("INFO: Called pause.");
@@ -101,7 +101,7 @@ class Controller {
 
 	/**
 	 * Plays kodi
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 */
 	play(callback = function() {}) {
 		console.log("INFO: Called play.");
@@ -112,7 +112,7 @@ class Controller {
 	}
 	/**
 	 * Skips to next media
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 */
 	goNext(callback = function() {}) {
 		console.log("INFO: Called goNext.");
@@ -124,7 +124,7 @@ class Controller {
 
 	/**
 	 * Goes to start or previous media
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 */
 	goPrevious(callback = function() {}) {
 		console.log("INFO: Called goPrevious.");
@@ -136,7 +136,7 @@ class Controller {
 
 	/**
 	 * Increases the volume
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 * @param {number} volumeChangeBy How much to increase the volume by
 	 */
 	volumeUp(callback = function() {}, volumeChangeBy = 5) {
@@ -154,7 +154,7 @@ class Controller {
 
 	/**
 	 * Decreases the volume
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 * @param {number} volumeChangeBy How much to decrease the volume by
 	 */
 	volumeDown(callback = function() {}, volumeChangeBy = 5) {
@@ -165,6 +165,48 @@ class Controller {
 				if (err){ callback(err); }
 				else {
 					this.sendRequest("Application.SetVolume", {"volume" : currentVolume - volumeChangeBy}, callback);
+				}
+			});
+		}
+	}
+
+	/**
+	 * Fast forwards
+	 * @param {Function} callback The callback function called with err, callback
+	 * @param {number} speed The speed to fast forward with
+	 * 		speed has to be in [2, 4, 8, 16, 32]
+	 */
+	fastForward(callback = function() {}, speed = 2) {
+		console.log("INFO: Called fastForward.");
+		let allowedSpeeds = [2, 4, 8, 16, 32];
+		if(speed < 0) { callback("Speed must be positive!");}
+		else if(!allowedSpeeds.includes(speed)) {callback("Speed must be in [2, 4, 8, 16, 32]"); }
+		else {
+			this.getActivePlayerID((err, playerID) => {
+				if (err){ callback(err); }
+				else {
+					this.sendRequest("Player.SetSpeed", {playerid:playerID,"speed":speed}, callback);
+				}
+			});
+		}
+	}
+
+	/**
+	 * Rewinds
+	 * @param {Function} callback The callback function called with err, callback
+	 * @param {number} speed The speed to rewind by
+	 * 		speed has to be in [2, 4, 8, 16, 32]
+	 */
+	rewind(callback = function() {}, speed = 2) {
+		console.log("INFO: Called rewind.");
+		let allowedSpeeds = [2, 4, 8, 16, 32];
+		if(speed < 0) { callback("Speed must be positive!");}
+		else if(!allowedSpeeds.includes(speed)) {callback("Speed must be in [2, 4, 8, 16, 32]"); }
+		else {
+			this.getActivePlayerID((err, playerID) => {
+				if (err){ callback(err); }
+				else {
+					this.sendRequest("Player.SetSpeed", {playerid:playerID,"speed":-speed}, callback);
 				}
 			});
 		}

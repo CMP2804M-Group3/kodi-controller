@@ -190,4 +190,42 @@ describe("Controller", () => {
 		});
 	});
 
+	describe("fastForward", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Player.SetSpeed";
+				})
+				.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":2}}`);
+
+			SetNockPlayerID();
+
+			c.fastForward((err, response) => {
+				if (err || !response) done(err);
+				done();
+			});
+		});
+	});
+
+	describe("rewind", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Player.SetSpeed";
+				})
+				.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":-2}}`);
+
+			SetNockPlayerID();
+
+			c.rewind((err, response) => {
+				if (err || !response) done(err);
+				done();
+			});
+		});
+	});
+
 });
