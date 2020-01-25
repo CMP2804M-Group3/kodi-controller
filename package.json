@@ -4,7 +4,7 @@
   "description": "Control Kodi from JavaScript!",
   "license": "GPL-3.0",
   "repository": "github:CMP2804M-Group3/kodi-controller",
-  "main": "Controller.js",
+  "main": "src/Controller.js",
   "homepage": "https://cmp2804m-group3.github.io/kodi-controller",
   "contributors": [
     {
@@ -30,9 +30,12 @@
     "media"
   ],
   "dependencies": {
-    "request": "^2.88.0"
+    "mocha": "^7.0.0",
+    "nock": "^11.7.2",
+    "request": "^2.88.0",
+    "sinon": "^8.1.1"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha src/test"
   }
 }
