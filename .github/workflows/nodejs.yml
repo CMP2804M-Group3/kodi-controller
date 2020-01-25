@@ -29,6 +29,6 @@ jobs:
         npm install sinon
     - name: run tests
       run: |
-        ./node_modules/mocha/bin/mocha
+        npm test
       env:
         CI: true
