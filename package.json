@@ -30,6 +30,7 @@
     "media"
   ],
   "dependencies": {
+    "jsdoc": "^3.6.3",
     "mocha": "^7.0.0",
     "nock": "^11.7.2",
     "request": "^2.88.0",
