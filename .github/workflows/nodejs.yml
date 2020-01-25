@@ -10,9 +10,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [10.x, 12.x]
@@ -25,14 +23,14 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: npm install and build
       run: |
-        cd KodiController
+        cd src
         npm install
         npm install mocha
         npm install nock
         npm install sinon
     - name: run tests
       run: |
-        cd KodiController
+        cd src
         ./node_modules/mocha/bin/mocha
       env:
         CI: true

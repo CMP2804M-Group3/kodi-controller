@@ -23,7 +23,7 @@ jobs:
     - name: Generate JSDoc
       run: |
         npm install jsdoc
-        ./node_modules/.bin/jsdoc KodiController GestureControl -r -d docs
+        ./node_modules/.bin/jsdoc src -r -d docs
     - name: Commit files
       run: |
         git add docs
