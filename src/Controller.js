@@ -59,7 +59,7 @@ class Controller {
 		if (!callback) {console.error("Callback must be supplied for getVolume!"); return;}
 		this.sendRequest("Application.GetProperties", {"properties": ["volume"]}, (err, data) => {
 			if(err) { callback(err); }
-			else { callback(err, data.volume); }
+			callback(err, data.volume);
 		});
 	}
 
@@ -71,7 +71,7 @@ class Controller {
 		if (!callback) {console.error("Callback must be supplied for getActivePlayerID!"); return;}
 		this.sendRequest("Player.GetActivePlayers", null, (err, data) => {
 			if (err){ callback(err); }
-			else{ callback(err, data[0].playerid); }
+			callback(err, data[0].playerid);
 		});
 	}
 
@@ -82,7 +82,7 @@ class Controller {
 	playPause(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); }
-			else{ this.sendRequest("Player.PlayPause", {playerid: playerID}, callback); }
+			this.sendRequest("Player.PlayPause", {playerid: playerID}, callback);
 		});
 	}
 
@@ -93,7 +93,7 @@ class Controller {
 	pause(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); }
-			else{ this.sendRequest("Player.PlayPause", {playerid: playerID, play: false}, callback); }
+			this.sendRequest("Player.PlayPause", {playerid: playerID, play: false}, callback);
 		});
 	}
 
@@ -104,7 +104,7 @@ class Controller {
 	play(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); }
-			else { this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback); }
+			this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback);
 		});
 	}
 	/**
@@ -114,7 +114,7 @@ class Controller {
 	goNext(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); }
-			else { this.sendRequest("Player.GoNext", {playerid: playerID}, callback); }
+			this.sendRequest("Player.GoNext", {playerid: playerID}, callback);
 		});
 	}
 
@@ -125,7 +125,7 @@ class Controller {
 	goPrevious(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err);}
-			else{ this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback); }
+			this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback);
 		});
 	}
 
@@ -139,9 +139,8 @@ class Controller {
 		else {
 			this.getVolume((err, currentVolume) => {
 				if (err){ callback(err); }
-				else {
-					this.sendRequest("Application.SetVolume", {"volume" : currentVolume + volumeChangeBy}, callback);
-				}
+				this.sendRequest("Application.SetVolume", {"volume" : currentVolume + volumeChangeBy}, callback);
+
 			});
 		}
 	}
@@ -156,9 +155,7 @@ class Controller {
 		else {
 			this.getVolume((err, currentVolume) => {
 				if (err){ callback(err); }
-				else {
-					this.sendRequest("Application.SetVolume", {"volume" : currentVolume - volumeChangeBy}, callback);
-				}
+				this.sendRequest("Application.SetVolume", {"volume" : currentVolume - volumeChangeBy}, callback);
 			});
 		}
 	}
@@ -173,14 +170,12 @@ class Controller {
 		let allowedSpeeds = [2, 4, 8, 16, 32];
 		if(speed < 0) { callback("Speed must be positive!");}
 		else if(!allowedSpeeds.includes(speed)) {callback("Speed must be in [2, 4, 8, 16, 32]"); }
-		else {
-			this.getActivePlayerID((err, playerID) => {
-				if (err){ callback(err); }
-				else {
-					this.sendRequest("Player.SetSpeed", {playerid:playerID,"speed":speed}, callback);
-				}
-			});
-		}
+		this.getActivePlayerID((err, playerID) => {
+			if (err){ callback(err); }
+			else {
+				this.sendRequest("Player.SetSpeed", {playerid:playerID,"speed":speed}, callback);
+			}
+		});
 	}
 
 	/**
@@ -193,16 +188,13 @@ class Controller {
 		let allowedSpeeds = [2, 4, 8, 16, 32];
 		if(speed < 0) { callback("Speed must be positive!");}
 		else if(!allowedSpeeds.includes(speed)) {callback("Speed must be in [2, 4, 8, 16, 32]"); }
-		else {
-			this.getActivePlayerID((err, playerID) => {
-				if (err){ callback(err); }
-				else {
-					this.sendRequest("Player.SetSpeed", {playerid:playerID,"speed":-speed}, callback);
-				}
-			});
-		}
+		this.getActivePlayerID((err, playerID) => {
+			if (err){ callback(err); }
+			else {
+				this.sendRequest("Player.SetSpeed", {playerid:playerID,"speed":-speed}, callback);
+			}
+		});
 	}
-
 }
 
 module.exports = Controller;
