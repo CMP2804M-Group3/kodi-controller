@@ -228,4 +228,21 @@ describe("Controller", () => {
 		});
 	});
 
+	describe("showInfo", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Input.Info";
+				})
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\": \"OK\"}");
+
+			c.showInfo((err, response) => {
+				if (err || !response) { done(err); }
+				done();
+			});
+		});
+	});
+
 });
