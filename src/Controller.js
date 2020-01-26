@@ -32,9 +32,9 @@ class Controller {
 		if (params) { body.params = params; } // If params are supplied add them to the request
 		request.post(this.url, {json: body})
 		.on("response", (packet) => { 
-			packet.on("data", packetData => { data += packetData; });
+			packet.on("data", (packetData) => { data += packetData; });
 		})
-		.on("error", err => {
+		.on("error", (err) => {
 			if (callback){ callback(err); }
 		})
 		.on("end", () => {

@@ -10,7 +10,7 @@ function SetNockPlayerID(){
 	.post("/jsonrpc", (body) => {
 		return body.jsonrpc === RPCVersion && body.method === "Player.GetActivePlayers";
 	})
-	.reply(200, `{"id":1,"jsonrpc":"2.0","result":[{"playerid":1337,"playertype":"internal","type":"video"}]}`);
+	.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":[{\"playerid\":1337,\"playertype\":\"internal\",\"type\":\"video\"}]}");
 }
 
 function SetNockVolume(){
@@ -18,7 +18,7 @@ function SetNockVolume(){
 		.post("/jsonrpc", (body) => {
 			return body.jsonrpc === RPCVersion && body.method === "Application.GetProperties";
 		})
-		.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"volume":24}}`);
+		.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":{\"volume\":24}}");
 }
 
 describe("Controller", () => {
@@ -34,7 +34,7 @@ describe("Controller", () => {
 			SetNockPlayerID();
 
 			c.getActivePlayerID((err, playerID) => {
-				if (err || !playerID) done(err);
+				if (err || !playerID) { done(err); }
 				assert.equal(1337, playerID);
 				done();
 			});
@@ -48,7 +48,7 @@ describe("Controller", () => {
 			SetNockVolume();
 
 			c.getVolume((err, volume) => {
-				if (err || !volume) done(err);
+				if (err || !volume) { done(err); }
 				assert.equal(24, volume);
 				done();
 			});
@@ -63,12 +63,12 @@ describe("Controller", () => {
 			.post("/jsonrpc", (body) => {
 				return body.jsonrpc === RPCVersion && body.method === "Player.PlayPause";
 			})
-			.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":0}}`);
+			.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":{\"speed\":0}}");
 
 			SetNockPlayerID();
 
 			c.playPause((err, response) => {
-				if (err || !response) done(err);
+				if (err || !response) { done(err); }
 				done();
 			});
 		});
@@ -82,12 +82,12 @@ describe("Controller", () => {
 			.post("/jsonrpc", (body) => {
 				return body.jsonrpc === RPCVersion && body.method === "Player.PlayPause";
 			})
-			.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":1}}`);
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":{\"speed\":1}}");
 
 			SetNockPlayerID();
 
 			c.play((err, response) => {
-				if (err || !response) done(err);
+				if (err || !response) { done(err); }
 				done();
 			});
 		});
@@ -101,12 +101,12 @@ describe("Controller", () => {
 			.post("/jsonrpc", (body) => {
 				return body.jsonrpc === RPCVersion && body.method === "Player.PlayPause";
 			})
-			.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":0}}`);
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":{\"speed\":0}}");
 
 			SetNockPlayerID();
 
 			c.pause((err, response) => {
-				if (err || !response) done(err);
+				if (err || !response) { done(err); }
 				done();
 			});
 		});
@@ -120,12 +120,12 @@ describe("Controller", () => {
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Player.GoNext";
 				})
-				.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":0}}`);
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":{\"speed\":0}}");
 
 			SetNockPlayerID();
 
 			c.goNext((err, response) => {
-				if (err || !response) done(err);
+				if (err || !response) { done(err); }
 				done();
 			});
 		});
@@ -139,12 +139,12 @@ describe("Controller", () => {
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Player.GoPrevious";
 				})
-				.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":0}}`);
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":{\"speed\":0}}");
 
 			SetNockPlayerID();
 
 			c.goPrevious((err, response) => {
-				if (err || !response) done(err);
+				if (err || !response) { done(err); }
 				done();
 			});
 		});
@@ -158,12 +158,12 @@ describe("Controller", () => {
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Application.SetVolume";
 				})
-				.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"volume":19}}`);
+				.reply(200, "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"volume\":19}}");
 
 			SetNockVolume();
 
 			c.volumeDown((err, volume) => {
-				if (err || !volume) done(err);
+				if (err || !volume) { done(err); }
 				assert.equal(19, volume.volume);
 				done();
 			});
@@ -178,12 +178,12 @@ describe("Controller", () => {
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Application.SetVolume";
 				})
-				.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"volume":29}}`);
+				.reply(200, "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"volume\":29}}");
 
 			SetNockVolume();
 
 			c.volumeUp((err, volume) => {
-				if (err || !volume) done(err);
+				if (err || !volume) { done(err); }
 				assert.equal(29, volume.volume);
 				done();
 			});
@@ -198,12 +198,12 @@ describe("Controller", () => {
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Player.SetSpeed";
 				})
-				.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":2}}`);
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":{\"speed\":2}}");
 
 			SetNockPlayerID();
 
 			c.fastForward((err, response) => {
-				if (err || !response) done(err);
+				if (err || !response) { done(err); }
 				done();
 			});
 		});
@@ -217,12 +217,12 @@ describe("Controller", () => {
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Player.SetSpeed";
 				})
-				.reply(200, `{"id":1,"jsonrpc":"2.0","result":{"speed":-2}}`);
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":{\"speed\":-2}}");
 
 			SetNockPlayerID();
 
 			c.rewind((err, response) => {
-				if (err || !response) done(err);
+				if (err || !response) { done(err); }
 				done();
 			});
 		});
