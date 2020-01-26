@@ -60,9 +60,9 @@ class Controller {
 		if (params) { body.params = params; } // If params are supplied add them to the request
 		request.post(this.url, {json: body})
 		.on("response", (packet) => { 
-			packet.on("data", packetData => { data += packetData; });
+			packet.on("data", (packetData) => { data += packetData; });
 		})
-		.on("error", err => {
+		.on("error", (err) => {
 			if (callback){ callback(err); }
 		})
 		.on("end", () => {
@@ -84,10 +84,10 @@ class Controller {
 	 * @param {Function} callback The callback function called with the params (err, data) with data being the volume
 	 */
 	getVolume(callback) {
-		if (!callback) {console.error("Callback must be supplied for getVolume!"); return;}
+		if (!callback) {throw "Callback must be supplied for getVolume!"; }
 		this.sendRequest("Application.GetProperties", {"properties": ["volume"]}, (err, data) => {
 			if(err) { callback(err); }
-			else { callback(err, data.volume); }
+			callback(err, data.volume);
 		});
 	}
 
@@ -96,108 +96,131 @@ class Controller {
 	 *  @param {Function} callback The callback function called with the params (err, data) with data being the ID
 	 */
 	getActivePlayerID(callback) {
-		if (!callback) {console.error("Callback must be supplied for getActivePlayerID!"); return;}
+		if (!callback) {throw "Callback must be supplied for getActivePlayerID!"; }
 		this.sendRequest("Player.GetActivePlayers", null, (err, data) => {
 			if (err){ callback(err); }
-			else{ callback(err, data[0].playerid); }
+			callback(err, data[0].playerid);
 		});
 	}
 
 	/**
 	 * Plays kodi if paused and pauses if playing
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 */
 	playPause(callback = function() {}) {
-		console.log("INFO: Called playPause.");
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err); }
-			else{ this.sendRequest("Player.PlayPause", {playerid: playerID}, callback); }
+			if (err){ callback(err); return; }
+			this.sendRequest("Player.PlayPause", {playerid: playerID}, callback);
 		});
 	}
 
 	/**
 	 * Pauses kodi
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 */
 	pause(callback = function() {}) {
-		console.log("INFO: Called pause.");
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err); }
-			else{ this.sendRequest("Player.PlayPause", {playerid: playerID, play: false}, callback); }
+			if (err){ callback(err); return; }
+			this.sendRequest("Player.PlayPause", {playerid: playerID, play: false}, callback);
 		});
 	}
 
 	/**
 	 * Plays kodi
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 */
 	play(callback = function() {}) {
-		console.log("INFO: Called play.");
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err); }
-			else { this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback); }
+			if (err){ callback(err); return; }
+			this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback);
 		});
 	}
 	/**
 	 * Skips to next media
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 */
 	goNext(callback = function() {}) {
-		console.log("INFO: Called goNext.");
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err); }
-			else { this.sendRequest("Player.GoNext", {playerid: playerID}, callback); }
+			if (err){ callback(err); return; }
+			this.sendRequest("Player.GoNext", {playerid: playerID}, callback);
 		});
 	}
 
 	/**
 	 * Goes to start or previous media
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 */
 	goPrevious(callback = function() {}) {
-		console.log("INFO: Called goPrevious.");
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err);}
-			else{ this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback); }
+			if (err){ callback(err); return; }
+			this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback);
 		});
 	}
 
 	/**
 	 * Increases the volume
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 * @param {number} volumeChangeBy How much to increase the volume by
 	 */
 	volumeUp(callback = function() {}, volumeChangeBy = 5) {
-		console.log("INFO: Called volumeUp.");
-		if(volumeChangeBy &lt; 0) { callback("volumeChangeBy must be positive!");}
-		else {
-			this.getVolume((err, currentVolume) => {
-				if (err){ callback(err); }
-				else {
-					this.sendRequest("Application.SetVolume", {"volume" : currentVolume + volumeChangeBy}, callback);
-				}
-			});
-		}
+		if(volumeChangeBy &lt; 0) { callback("volumeChangeBy must be positive!"); return; }
+		this.getVolume((err, currentVolume) => {
+			if (err){ callback(err); }
+			this.sendRequest("Application.SetVolume", {"volume" : currentVolume + volumeChangeBy}, callback);
+
+		});
+
 	}
 
 	/**
 	 * Decreases the volume
-	 * @param {Function} callback The callback function called with the err
+	 * @param {Function} callback The callback function called with err, callback
 	 * @param {number} volumeChangeBy How much to decrease the volume by
 	 */
 	volumeDown(callback = function() {}, volumeChangeBy = 5) {
-		console.log("INFO: Called volumeDown.");
-		if(volumeChangeBy &lt; 0) { callback("volumeChangeBy must be positive!");}
-		else {
-			this.getVolume((err, currentVolume) => {
-				if (err){ callback(err); }
-				else {
-					this.sendRequest("Application.SetVolume", {"volume" : currentVolume - volumeChangeBy}, callback);
-				}
-			});
-		}
+		if(volumeChangeBy &lt; 0) { callback("volumeChangeBy must be positive!"); return; }
+		this.getVolume((err, currentVolume) => {
+			if (err){ callback(err); }
+			this.sendRequest("Application.SetVolume", {"volume" : currentVolume - volumeChangeBy}, callback);
+		});
+
 	}
 
+	/**
+	 * Fast forwards
+	 * @param {Function} callback The callback function called with err, callback
+	 * @param {number} speed The speed to fast forward with
+	 * 		speed has to be in [2, 4, 8, 16, 32]
+	 */
+	fastForward(callback = function() {}, speed = 2) {
+		let allowedSpeeds = [2, 4, 8, 16, 32];
+		if(speed &lt; 0) { callback("Speed must be positive!");}
+		else if(!allowedSpeeds.includes(speed)) {callback("Speed must be in [2, 4, 8, 16, 32]"); }
+		this.getActivePlayerID((err, playerID) => {
+			if (err){ callback(err); }
+			else {
+				this.sendRequest("Player.SetSpeed", {playerid:playerID,"speed":speed}, callback);
+			}
+		});
+	}
+
+	/**
+	 * Rewinds
+	 * @param {Function} callback The callback function called with err, callback
+	 * @param {number} speed The speed to rewind by
+	 * 		speed has to be in [2, 4, 8, 16, 32]
+	 */
+	rewind(callback = function() {}, speed = 2) {
+		let allowedSpeeds = [2, 4, 8, 16, 32];
+		if(speed &lt; 0) { callback("Speed must be positive!");}
+		else if(!allowedSpeeds.includes(speed)) {callback("Speed must be in [2, 4, 8, 16, 32]"); }
+		this.getActivePlayerID((err, playerID) => {
+			if (err){ callback(err); }
+			else {
+				this.sendRequest("Player.SetSpeed", {playerid:playerID,"speed":-speed}, callback);
+			}
+		});
+	}
 }
 
 module.exports = Controller;
@@ -219,7 +242,7 @@ module.exports = Controller;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Jan 25 2020 22:15:20 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Jan 26 2020 15:07:38 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
