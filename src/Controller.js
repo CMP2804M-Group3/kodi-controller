@@ -56,7 +56,7 @@ class Controller {
 	 * @param {Function} callback The callback function called with the params (err, data) with data being the volume
 	 */
 	getVolume(callback) {
-		if (!callback) {console.error("Callback must be supplied for getVolume!"); return;}
+		if (!callback) {throw "Callback must be supplied for getVolume!"; }
 		this.sendRequest("Application.GetProperties", {"properties": ["volume"]}, (err, data) => {
 			if(err) { callback(err); }
 			callback(err, data.volume);
@@ -68,7 +68,7 @@ class Controller {
 	 *  @param {Function} callback The callback function called with the params (err, data) with data being the ID
 	 */
 	getActivePlayerID(callback) {
-		if (!callback) {console.error("Callback must be supplied for getActivePlayerID!"); return;}
+		if (!callback) {throw "Callback must be supplied for getActivePlayerID!"; }
 		this.sendRequest("Player.GetActivePlayers", null, (err, data) => {
 			if (err){ callback(err); }
 			callback(err, data[0].playerid);
