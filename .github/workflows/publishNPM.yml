@@ -17,6 +17,8 @@ jobs:
       - name: Publish
         run: |
           cd src
+          git config --global user.email "joepittsy@gmail.com"
+          git config --global user.name "Joseph Pitts"
           npm version patch
           npm publish --access public
         env:
