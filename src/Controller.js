@@ -81,7 +81,7 @@ class Controller {
 	 */
 	playPause(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err); }
+			if (err){ callback(err); return; }
 			this.sendRequest("Player.PlayPause", {playerid: playerID}, callback);
 		});
 	}
@@ -92,7 +92,7 @@ class Controller {
 	 */
 	pause(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err); }
+			if (err){ callback(err); return; }
 			this.sendRequest("Player.PlayPause", {playerid: playerID, play: false}, callback);
 		});
 	}
@@ -103,7 +103,7 @@ class Controller {
 	 */
 	play(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err); }
+			if (err){ callback(err); return; }
 			this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback);
 		});
 	}
@@ -113,7 +113,7 @@ class Controller {
 	 */
 	goNext(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err); }
+			if (err){ callback(err); return; }
 			this.sendRequest("Player.GoNext", {playerid: playerID}, callback);
 		});
 	}
@@ -124,7 +124,7 @@ class Controller {
 	 */
 	goPrevious(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err);}
+			if (err){ callback(err); return; }
 			this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback);
 		});
 	}
@@ -135,14 +135,13 @@ class Controller {
 	 * @param {number} volumeChangeBy How much to increase the volume by
 	 */
 	volumeUp(callback = function() {}, volumeChangeBy = 5) {
-		if(volumeChangeBy < 0) { callback("volumeChangeBy must be positive!");}
-		else {
-			this.getVolume((err, currentVolume) => {
-				if (err){ callback(err); }
-				this.sendRequest("Application.SetVolume", {"volume" : currentVolume + volumeChangeBy}, callback);
+		if(volumeChangeBy < 0) { callback("volumeChangeBy must be positive!"); return; }
+		this.getVolume((err, currentVolume) => {
+			if (err){ callback(err); }
+			this.sendRequest("Application.SetVolume", {"volume" : currentVolume + volumeChangeBy}, callback);
 
-			});
-		}
+		});
+
 	}
 
 	/**
@@ -151,13 +150,12 @@ class Controller {
 	 * @param {number} volumeChangeBy How much to decrease the volume by
 	 */
 	volumeDown(callback = function() {}, volumeChangeBy = 5) {
-		if(volumeChangeBy < 0) { callback("volumeChangeBy must be positive!");}
-		else {
-			this.getVolume((err, currentVolume) => {
-				if (err){ callback(err); }
-				this.sendRequest("Application.SetVolume", {"volume" : currentVolume - volumeChangeBy}, callback);
-			});
-		}
+		if(volumeChangeBy < 0) { callback("volumeChangeBy must be positive!"); return; }
+		this.getVolume((err, currentVolume) => {
+			if (err){ callback(err); }
+			this.sendRequest("Application.SetVolume", {"volume" : currentVolume - volumeChangeBy}, callback);
+		});
+
 	}
 
 	/**
