@@ -1,5 +1,6 @@
 # Kodi Controller
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/CMP2804M-Group3/kodi-controller/Node%20CI)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/debea2731c734ee2aead6427217a3b86)](https://app.codacy.com/gh/CMP2804M-Group3/kodi-controller?utm_source=github.com&utm_medium=referral&utm_content=CMP2804M-Group3/kodi-controller&utm_campaign=Badge_Grade_Dashboard)
 [![npm](https://img.shields.io/npm/v/kodi-controller?color=yellow)](https://www.npmjs.com/package/kodi-controller)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Inline docs](http://inch-ci.org/github/CMP2804M-Group3/kodi-controller.svg?branch=master)](http://inch-ci.org/github/CMP2804M-Group3/kodi-controller)
