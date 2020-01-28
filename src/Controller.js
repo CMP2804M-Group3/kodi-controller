@@ -84,7 +84,6 @@ class Controller {
 	 * @param callback
 	 */
 	goHome(callback = function() {}) {
-			if (err){ callback(err); return; }
 			this.sendRequest("Input.Home", null, callback);
 	}
 
