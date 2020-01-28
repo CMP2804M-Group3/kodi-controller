@@ -80,7 +80,7 @@ class Controller {
 	 * Goes to Kodi home menu
 	 * @param callback
 	 */
-	exit(callback = function() {}) {
+	goHome(callback = function() {}) {
 			this.sendRequest("Input.Home", null, callback);
 	}
 
