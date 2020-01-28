@@ -74,19 +74,37 @@ class Controller {
 			callback(err, data[0].playerid);
 		});
 	}
+	/**
+	 * Stops kodi
+	 * @param {Function} callback The callback function called with err, callback
+	 */
+	stop(callback = function() {}) {
+		this.getActivePlayerID((err, playerID) => {
+			if (err){ callback(err); return; }
+			this.sendRequest("Player.Stop", {playerid: playerID}, callback);
+		});
+	}
 
 
 	/**
 	 * Goes to Kodi home menu
-	 * @param callback
+	 * @param {Function} callback The callback function called with the params (err, data)
 	 */
 	goHome(callback = function() {}) {
 			this.sendRequest("Input.Home", null, callback);
 	}
 
 	/**
+	 * Selects the current menu item
+	 * @param  {Function} callback The callback function called with the params (err, data)
+	 */
+	select(callback = function() {}) {
+		this.sendRequest("Input.Select", null, callback);
+	}
+
+	/**
 	 * Navigates left in the menu
-	 * @param callback
+	 * @param  {Function} callback The callback function called with the params (err, data)
 	 */
 	goLeft(callback = function() {}) {
 		this.sendRequest("Input.Left", null, callback);
@@ -94,7 +112,7 @@ class Controller {
 
 	/**
 	 * Navigates right in the menu
-	 * @param callback
+	 * @param  {Function} callback The callback function called with the params (err, data)
 	 */
 	goRight(callback = function() {}) {
 		this.sendRequest("Input.Right", null, callback);
@@ -102,15 +120,15 @@ class Controller {
 
 	/**
 	 * Navigates up in the menu
-	 * @param callback
+	 * @param  {Function} callback The callback function called with the params (err, data)
 	 */
 	goUp(callback = function() {}) {
 		this.sendRequest("Input.Up", null, callback);
 	}
 
 	/**
-	 *
-	 * @param callback
+	 * Navigates down in the menu
+	 * @param  {Function} callback The callback function called with the params (err, data)
 	 */
 	goDown(callback = function() {}) {
 		this.sendRequest("Input.Down", null, callback);
