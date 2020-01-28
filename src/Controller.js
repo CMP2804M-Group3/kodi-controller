@@ -109,7 +109,7 @@ class Controller {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param callback
 	 */
 	goDown(callback = function() {}) {
