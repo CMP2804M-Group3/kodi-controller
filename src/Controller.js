@@ -84,14 +84,26 @@ class Controller {
 			this.sendRequest("Input.Home", null, callback);
 	}
 
+	/**
+	 * Navigates left in the menu
+	 * @param callback
+	 */
 	goLeft(callback = function() {}) {
 		this.sendRequest("Input.Left", null, callback);
 	}
 
+	/**
+	 * Navigates right in the menu
+	 * @param callback
+	 */
 	goRight(callback = function() {}) {
 		this.sendRequest("Input.Right", null, callback);
 	}
 
+	/**
+	 * Navigates up in the menu
+	 * @param callback
+	 */
 	goUp(callback = function() {}) {
 		this.sendRequest("Input.Up", null, callback);
 	}
