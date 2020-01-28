@@ -11,9 +11,9 @@ if (condition) {
 	// do something else
 }
 
-func((arg1. arg2) => {
+func((arg1, arg2) => {
 	// callback stuff
-});
+})
 ```
 - Not these
 ```js
