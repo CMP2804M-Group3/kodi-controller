@@ -108,8 +108,20 @@ class Controller {
 		this.sendRequest("Input.Up", null, callback);
 	}
 
+	/**
+	 * 
+	 * @param callback
+	 */
 	goDown(callback = function() {}) {
 		this.sendRequest("Input.Down", null, callback);
+	}
+
+	/**
+	 *
+	 * @param callback
+	 */
+	goBack(callback = function() {}) {
+		this.sendRequest("Input.Back", null, callback);
 	}
 
 	/**
