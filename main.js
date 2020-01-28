@@ -1,7 +1,7 @@
 const KodiController = require("./src/Controller.js");
 
 Kodi = new KodiController();
-Kodi.goHome((err, data) =>{
+Kodi.goPrevious((err, data) =>{
     console.log(err);
     console.log(data);
 

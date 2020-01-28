@@ -75,15 +75,12 @@ class Controller {
 		});
 	}
 
-	/**
-	 * Inputs section
-	 */
 
 	/**
 	 * Goes to Kodi home menu
 	 * @param callback
 	 */
-	goHome(callback = function() {}) {
+	exit(callback = function() {}) {
 			this.sendRequest("Input.Home", null, callback);
 	}
 
@@ -130,7 +127,7 @@ class Controller {
 	goNext(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); return; }
-			this.sendRequest("Player.GoNext", {playerid: playerID}, callback);
+			this.sendRequest("Player.GoTo", {playerid: playerID, "to":"next"}, callback);
 		});
 	}
 
@@ -141,7 +138,7 @@ class Controller {
 	goPrevious(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); return; }
-			this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback);
+			this.sendRequest("Player.GoTo", {playerid: playerID, "to":"previous"}, callback);
 		});
 	}
 
