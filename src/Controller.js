@@ -76,7 +76,24 @@ class Controller {
 	}
 
 	/**
-	 * Plays kodi if paused and pauses if playing
+	 * Inputs section
+	 */
+
+	/**
+	 * Goes to Kodi home menu
+	 * @param callback
+	 */
+	goHome(callback = function() {}) {
+			if (err){ callback(err); return; }
+			this.sendRequest("Input.Home", null, callback);
+	}
+
+	/**
+	 * Media Controls section
+	 */
+
+	/**
+	 * Plays Kodi if paused and pauses if playing
 	 * @param {Function} callback The callback function called with err, callback
 	 */
 	playPause(callback = function() {}) {
@@ -87,7 +104,7 @@ class Controller {
 	}
 
 	/**
-	 * Pauses kodi
+	 * Pauses Kodi
 	 * @param {Function} callback The callback function called with err, callback
 	 */
 	pause(callback = function() {}) {
@@ -98,7 +115,7 @@ class Controller {
 	}
 
 	/**
-	 * Plays kodi
+	 * Plays Kodi
 	 * @param {Function} callback The callback function called with err, callback
 	 */
 	play(callback = function() {}) {
