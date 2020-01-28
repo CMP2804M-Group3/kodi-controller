@@ -87,6 +87,22 @@ class Controller {
 			this.sendRequest("Input.Home", null, callback);
 	}
 
+	goLeft(callback = function() {}) {
+		this.sendRequest("Input.Left", null, callback);
+	}
+
+	goRight(callback = function() {}) {
+		this.sendRequest("Input.Right", null, callback);
+	}
+
+	goUp(callback = function() {}) {
+		this.sendRequest("Input.Up", null, callback);
+	}
+
+	goDown(callback = function() {}) {
+		this.sendRequest("Input.Down", null, callback);
+	}
+
 	/**
 	 * Media Controls section
 	 */
