@@ -74,6 +74,16 @@ class Controller {
 			callback(err, data[0].playerid);
 		});
 	}
+	/**
+	 * Stops kodi
+	 * @param {Function} callback The callback function called with err, callback
+	 */
+	stop(callback = function() {}) {
+		this.getActivePlayerID((err, playerID) => {
+			if (err){ callback(err); return; }
+			this.sendRequest("Player.Stop", {playerid: playerID}, callback);
+		});
+	}
 
 
 	/**

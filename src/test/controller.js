@@ -97,6 +97,25 @@ describe("Controller", () => {
 		});
 	});
 
+	describe("stop", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Player.Stop";
+				})
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+			setNockPlayerID();
+
+			c.stop((err, response) => {
+				if (err || !response) { done(err); }
+				else{done();}
+			});
+		});
+	});
+
 	describe("pause", () => {
 		it("should not return an error", (done) => {
 			let c = new Controller();
@@ -244,7 +263,7 @@ describe("Controller", () => {
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Input.Home";
 				})
-				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"ok\"}");
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
 
 			setNockPlayerID();
 
@@ -262,7 +281,7 @@ describe("Controller", () => {
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Input.Left";
 				})
-				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"ok\"}");
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
 
 			setNockPlayerID();
 
@@ -280,7 +299,7 @@ describe("Controller", () => {
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Input.Right";
 				})
-				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"ok\"}");
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
 
 			setNockPlayerID();
 
@@ -298,7 +317,7 @@ describe("Controller", () => {
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Input.Up";
 				})
-				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"ok\"}");
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
 
 			setNockPlayerID();
 
@@ -316,7 +335,7 @@ describe("Controller", () => {
 				.post("/jsonrpc", (body) => {
 					return body.jsonrpc === RPCVersion && body.method === "Input.Down";
 				})
-				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"ok\"}");
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
 
 			setNockPlayerID();
 
