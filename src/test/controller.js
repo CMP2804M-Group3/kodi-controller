@@ -35,8 +35,10 @@ describe("Controller", () => {
 
 			c.getActivePlayerID((err, playerID) => {
 				if (err || !playerID) { done(err); }
-				assert.equal(1337, playerID);
-				done();
+				else{
+					assert.equal(1337, playerID);
+					done();
+				}
 			});
 		});
 	});
@@ -49,8 +51,10 @@ describe("Controller", () => {
 
 			c.getVolume((err, volume) => {
 				if (err || !volume) { done(err); }
-				assert.equal(24, volume);
-				done();
+				else{
+					assert.equal(24, volume);
+					done();
+				}
 			});
 		});
 	});
@@ -69,7 +73,7 @@ describe("Controller", () => {
 
 			c.playPause((err, response) => {
 				if (err || !response) { done(err); }
-				done();
+				else{done();}
 			});
 		});
 	});
@@ -88,7 +92,45 @@ describe("Controller", () => {
 
 			c.play((err, response) => {
 				if (err || !response) { done(err); }
-				done();
+				else{done();}
+			});
+		});
+	});
+
+	describe("stop", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Player.Stop";
+				})
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+			setNockPlayerID();
+
+			c.stop((err, response) => {
+				if (err || !response) { done(err); }
+				else{done();}
+			});
+		});
+	});
+
+	describe("select", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Input.Select";
+				})
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+			setNockPlayerID();
+
+			c.select((err, response) => {
+				if (err || !response) { done(err); }
+				else{done();}
 			});
 		});
 	});
@@ -107,7 +149,7 @@ describe("Controller", () => {
 
 			c.pause((err, response) => {
 				if (err || !response) { done(err); }
-				done();
+				else{done();}
 			});
 		});
 	});
@@ -118,7 +160,7 @@ describe("Controller", () => {
 
 			nock("http://localhost:8080")
 				.post("/jsonrpc", (body) => {
-					return body.jsonrpc === RPCVersion && body.method === "Player.GoNext";
+					return body.jsonrpc === RPCVersion && body.method === "Player.GoTo";
 				})
 				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":{\"speed\":0}}");
 
@@ -126,7 +168,7 @@ describe("Controller", () => {
 
 			c.goNext((err, response) => {
 				if (err || !response) { done(err); }
-				done();
+				else{done();}
 			});
 		});
 	});
@@ -137,7 +179,7 @@ describe("Controller", () => {
 
 			nock("http://localhost:8080")
 				.post("/jsonrpc", (body) => {
-					return body.jsonrpc === RPCVersion && body.method === "Player.GoPrevious";
+					return body.jsonrpc === RPCVersion && body.method === "Player.GoTo";
 				})
 				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":{\"speed\":0}}");
 
@@ -145,7 +187,7 @@ describe("Controller", () => {
 
 			c.goPrevious((err, response) => {
 				if (err || !response) { done(err); }
-				done();
+				else{done();}
 			});
 		});
 	});
@@ -164,8 +206,10 @@ describe("Controller", () => {
 
 			c.volumeDown((err, volume) => {
 				if (err || !volume) { done(err); }
-				assert.equal(19, volume.volume);
-				done();
+				else{
+					assert.equal(19, volume.volume);
+					done();
+				}
 			});
 		});
 	});
@@ -184,8 +228,10 @@ describe("Controller", () => {
 
 			c.volumeUp((err, volume) => {
 				if (err || !volume) { done(err); }
-				assert.equal(29, volume.volume);
-				done();
+				else{
+					assert.equal(29, volume.volume);
+					done();
+				}
 			});
 		});
 	});
@@ -204,7 +250,7 @@ describe("Controller", () => {
 
 			c.fastForward((err, response) => {
 				if (err || !response) { done(err); }
-				done();
+				else{done();}
 			});
 		});
 	});
@@ -223,9 +269,133 @@ describe("Controller", () => {
 
 			c.rewind((err, response) => {
 				if (err || !response) { done(err); }
-				done();
+				else{done();}
 			});
 		});
 	});
 
+	describe("goHome", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Input.Home";
+				})
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+			setNockPlayerID();
+
+			c.goHome((err, response) => {
+				if (err || !response) { done(err); }
+				else {done();}
+			});
+		});
+	});
+	describe("goLeft", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Input.Left";
+				})
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+			setNockPlayerID();
+
+			c.goLeft((err, response) => {
+				if (err || !response) { done(err); }
+				else {done();}
+			});
+		});
+	});
+	describe("goRight", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Input.Right";
+				})
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+			setNockPlayerID();
+
+			c.goRight((err, response) => {
+				if (err || !response) { done(err); }
+				else {done();}
+			});
+		});
+	});
+	describe("goUp", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Input.Up";
+				})
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+			setNockPlayerID();
+
+			c.goUp((err, response) => {
+				if (err || !response) { done(err); }
+				else {done();}
+			});
+		});
+	});
+	describe("goDown", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Input.Down";
+				})
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+			setNockPlayerID();
+
+			c.goDown((err, response) => {
+				if (err || !response) { done(err); }
+				else {done();}
+			});
+		});
+	});
+	describe("goBack", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Input.Back";
+				})
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"ok\"}");
+
+			setNockPlayerID();
+
+			c.goBack((err, response) => {
+				if (err || !response) { done(err); }
+				else {done();}
+			});
+		});
+	});
+  describe("showInfo", () => {
+    it("should not return an error", (done) => {
+      let c = new Controller();
+
+      nock("http://localhost:8080")
+        .post("/jsonrpc", (body) => {
+          return body.jsonrpc === RPCVersion && body.method === "Input.Info";
+        })
+        .reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\": \"OK\"}");
+
+      c.showInfo((err, response) => {
+        if (err || !response) { done(err); }
+        done();
+      });
+    });
+	});
 });

@@ -74,6 +74,57 @@ class Controller {
 			callback(err, data[0].playerid);
 		});
 	}
+	/**
+	 * Stops kodi
+	 * @param {Function} callback The callback function called with err, callback
+	 */
+	stop(callback = function() {}) {
+		this.getActivePlayerID((err, playerID) => {
+			if (err){ callback(err); return; }
+			this.sendRequest("Player.Stop", {playerid: playerID}, callback);
+		});
+	}
+
+
+	/**
+	 * Goes to Kodi home menu
+	 * @param {Function} callback The callback function called with the params (err, data)
+	 */
+	goHome(callback = function() {}) {
+			this.sendRequest("Input.Home", null, callback);
+	}
+
+	/**
+	 * Selects the current menu item
+	 * @param  {Function} callback The callback function called with the params (err, data)
+	 */
+	select(callback = function() {}) {
+		this.sendRequest("Input.Select", null, callback);
+	}
+
+	/**
+	 * Navigates left in the menu
+	 * @param  {Function} callback The callback function called with the params (err, data)
+	 */
+	goLeft(callback = function() {}) {
+		this.sendRequest("Input.Left", null, callback);
+	}
+
+	/**
+	 * Navigates right in the menu
+	 * @param  {Function} callback The callback function called with the params (err, data)
+	 */
+	goRight(callback = function() {}) {
+		this.sendRequest("Input.Right", null, callback);
+	}
+
+	/**
+	 * Navigates up in the menu
+	 * @param  {Function} callback The callback function called with the params (err, data)
+	 */
+	goUp(callback = function() {}) {
+		this.sendRequest("Input.Up", null, callback);
+	}
 
 	/**
 	 * Inputs section
@@ -86,6 +137,20 @@ class Controller {
 	goHome(callback = function() {}) {
 			if (err){ callback(err); return; }
 			this.sendRequest("Input.Home", null, callback);
+	/**
+	 * Navigates down in the menu
+	 * @param  {Function} callback The callback function called with the params (err, data)
+	 */
+	goDown(callback = function() {}) {
+		this.sendRequest("Input.Down", null, callback);
+	}
+
+	/**
+	 *
+	 * @param callback
+	 */
+	goBack(callback = function() {}){
+		this.sendRequest("Input.Back", null, callback);
 	}
 
 	/**
@@ -131,7 +196,7 @@ class Controller {
 	goNext(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); return; }
-			this.sendRequest("Player.GoNext", {playerid: playerID}, callback);
+			this.sendRequest("Player.GoTo", {playerid: playerID, "to":"next"}, callback);
 		});
 	}
 
@@ -142,7 +207,7 @@ class Controller {
 	goPrevious(callback = function() {}) {
 		this.getActivePlayerID((err, playerID) => {
 			if (err){ callback(err); return; }
-			this.sendRequest("Player.GoPrevious", {playerid: playerID}, callback);
+			this.sendRequest("Player.GoTo", {playerid: playerID, "to":"previous"}, callback);
 		});
 	}
 
@@ -154,7 +219,7 @@ class Controller {
 	volumeUp(callback = function() {}, volumeChangeBy = 5) {
 		if(volumeChangeBy < 0) { callback("volumeChangeBy must be positive!"); return; }
 		this.getVolume((err, currentVolume) => {
-			if (err){ callback(err); }
+			if (err){ callback(err); return; }
 			this.sendRequest("Application.SetVolume", {"volume" : currentVolume + volumeChangeBy}, callback);
 
 		});
@@ -169,7 +234,7 @@ class Controller {
 	volumeDown(callback = function() {}, volumeChangeBy = 5) {
 		if(volumeChangeBy < 0) { callback("volumeChangeBy must be positive!"); return; }
 		this.getVolume((err, currentVolume) => {
-			if (err){ callback(err); }
+			if (err){ callback(err); return; }
 			this.sendRequest("Application.SetVolume", {"volume" : currentVolume - volumeChangeBy}, callback);
 		});
 
@@ -186,7 +251,7 @@ class Controller {
 		if(speed < 0) { callback("Speed must be positive!");}
 		else if(!allowedSpeeds.includes(speed)) {callback("Speed must be in [2, 4, 8, 16, 32]"); }
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err); }
+			if (err){ callback(err); return; }
 			else {
 				this.sendRequest("Player.SetSpeed", {playerid:playerID,"speed":speed}, callback);
 			}
@@ -204,10 +269,19 @@ class Controller {
 		if(speed < 0) { callback("Speed must be positive!");}
 		else if(!allowedSpeeds.includes(speed)) {callback("Speed must be in [2, 4, 8, 16, 32]"); }
 		this.getActivePlayerID((err, playerID) => {
-			if (err){ callback(err); }
-			else {
-				this.sendRequest("Player.SetSpeed", {playerid:playerID,"speed":-speed}, callback);
-			}
+			if (err){ callback(err); return; }
+			this.sendRequest("Player.SetSpeed", {playerid:playerID,"speed":-speed}, callback);
+		});
+	}
+
+	/**
+	 * Shows info on the current video playing
+	 * @param {Function} callback The callback function called with the params (err, data) with data being the volume
+	 */
+	showInfo(callback = function () {}) {
+		this.sendRequest("Input.Info", null, (err, data) => {
+			if(err) { callback(err); return; }
+			callback(err, data);
 		});
 	}
 }
