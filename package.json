@@ -31,6 +31,8 @@
   ],
   "dependencies": {
     "local-devices": "^3.0.0",
+    "network-list": "^1.1.5",
+    "is-port-reachable": "^3.0.0",
     "request": "^2.88.0"
   },
   "devDependencies": {
