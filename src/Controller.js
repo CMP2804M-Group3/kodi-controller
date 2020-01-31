@@ -92,21 +92,11 @@ class Controller {
 	 * @param {Function} callback The callback function called with the params (err, data)
 	 */
 	goHome(callback = function() {}) {
-			this.sendRequest("Input.Home", null, callback);
-	/**
-	 * Navigates down in the menu
-	 * @param  {Function} callback The callback function called with the params (err, data)
-	 */
-	goDown(callback = function() {}) {
-		this.sendRequest("Input.Down", null, callback);
-	}
-
-	/**
-	 *
-	 * @param callback
-	 */
-	goBack(callback = function() {}){
-		this.sendRequest("Input.Back", null, callback);
+		this.sendRequest("Input.Home", null, callback);
+		/**
+		 * Navigates down in the menu
+		 * @param  {Function} callback The callback function called with the params (err, data)
+		 */
 	}
 
 	/**
@@ -158,8 +148,8 @@ class Controller {
 	}
 
 	/**
-	 *
-	 * @param callback
+	 * Goes back in the menu
+	 * @param {Function} callback The callback function called with the params (err, data)
 	 */
 	goBack(callback = function() {}) {
 		this.sendRequest("Input.Back", null, callback);
