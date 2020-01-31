@@ -74,6 +74,7 @@ class Controller {
 			callback(err, data[0].playerid);
 		});
 	}
+
 	/**
 	 * Stops kodi
 	 * @param {Function} callback The callback function called with err, callback
@@ -91,7 +92,19 @@ class Controller {
 	 * @param {Function} callback The callback function called with the params (err, data)
 	 */
 	goHome(callback = function() {}) {
-			this.sendRequest("Input.Home", null, callback);
+		this.sendRequest("Input.Home", null, callback);
+		/**
+		 * Navigates down in the menu
+		 * @param  {Function} callback The callback function called with the params (err, data)
+		 */
+	}
+
+	/**
+	 * Brings up the context menu
+	 * @param  {Function} callback The callback function called with the params (err, data)
+	 */
+	contextMenu(callback = function() {}) {
+		this.sendRequest("Input.ContextMenu", null, callback);
 	}
 
 	/**
@@ -127,17 +140,6 @@ class Controller {
 	}
 
 	/**
-	 * Inputs section
-	 */
-
-	/**
-	 * Goes to Kodi home menu
-	 * @param callback
-	 */
-	goHome(callback = function() {}) {
-			if (err){ callback(err); return; }
-			this.sendRequest("Input.Home", null, callback);
-	/**
 	 * Navigates down in the menu
 	 * @param  {Function} callback The callback function called with the params (err, data)
 	 */
@@ -146,10 +148,10 @@ class Controller {
 	}
 
 	/**
-	 *
-	 * @param callback
+	 * Goes back in the menu
+	 * @param {Function} callback The callback function called with the params (err, data)
 	 */
-	goBack(callback = function() {}){
+	goBack(callback = function() {}) {
 		this.sendRequest("Input.Back", null, callback);
 	}
 
