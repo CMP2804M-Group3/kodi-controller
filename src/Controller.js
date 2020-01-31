@@ -1,6 +1,4 @@
 const request = require("request");
-const netList = require('network-list');
-const isPortReachable = require('is-port-reachable');
 const RPCVersion = "2.0";
 const ID = 1;
 
@@ -16,31 +14,6 @@ class Controller {
     constructor(ip = "localhost", port = 8080) {
         this.url = `http://${ip}:${port}/jsonrpc`;
     }
-
-    /**
-     * Searches the network for Kodi's on the supplied port
-     * @param {Function} callback The callback function called with the params (err, data) with data being a list of ip's and port
-     * @param {number} port The port that Kodi is configured for (Default is 8080)
-     */
-    scanForKodis(callback, port = 8080) {
-        let kodis = [];
-        netList.scan({}, async (err, arr) => {
-            let aliveIPs = arr.filter(ip => ip.alive);
-            for (let i = 0; i < aliveIPs.length; i++) {
-                let ip = aliveIPs[i].ip;
-                await (async () => {
-                    if (await isPortReachable(port, {host: ip})) {
-                        kodis.push({ip, port});
-                    }
-                })().then(() => {
-                    if (i === (aliveIPs.length - 1)) {
-                        callback(null, kodis);
-                    }
-                });
-            }
-        });
-    }
-
 
     /**
      * Sends a request to Kodi with body as the body of the request, handles errors as needed
