@@ -33,10 +33,10 @@
     "request": "^2.88.0"
   },
   "devDependencies": {
+    "jsdoc": "^3.6.3",
     "mocha": "^7.0.1",
     "nock": "^11.7.2",
-    "sinon": "^8.1.1",
-    "jsdoc": "^3.6.3"
+    "sinon": "^8.1.1"
   },
   "scripts": {
     "test": "mocha src/test"
