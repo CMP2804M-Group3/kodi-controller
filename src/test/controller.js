@@ -292,6 +292,24 @@ describe("Controller", () => {
 			});
 		});
 	});
+	describe("contextMenu", () => {
+		it("should not return an error", (done) => {
+			let c = new Controller();
+
+			nock("http://localhost:8080")
+				.post("/jsonrpc", (body) => {
+					return body.jsonrpc === RPCVersion && body.method === "Input.ContextMenu";
+				})
+				.reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+			setNockPlayerID();
+
+			c.contextMenu((err, response) => {
+				if (err || !response) { done(err); }
+				else {done();}
+			});
+		});
+	});
 	describe("goLeft", () => {
 		it("should not return an error", (done) => {
 			let c = new Controller();

@@ -95,6 +95,14 @@ class Controller {
 	}
 
 	/**
+	 * Brings up the context menu
+	 * @param  {Function} callback The callback function called with the params (err, data)
+	 */
+	contextMenu(callback = function() {}) {
+		this.sendRequest("Input.ContextMenu", null, callback);
+	}
+
+	/**
 	 * Selects the current menu item
 	 * @param  {Function} callback The callback function called with the params (err, data)
 	 */
