@@ -24,23 +24,36 @@ class Controller {
      */
     scanForKodis(callback, port = 8080) {
         let kodis = [];
+
         netList.scan({}, async (err, arr) => {
             let aliveIPs = arr.filter(ip => ip.alive);
+
             for (let i = 0; i < aliveIPs.length; i++) {
-                let ip = aliveIPs[i].ip;
-                await (async () => {
-                    if (await isPortReachable(port, {host: ip})) {
-                        kodis.push({ip, port});
-                    }
-                })().then(() => {
-                    if (i === (aliveIPs.length - 1)) {
-                        callback(null, kodis);
-                    }
-                });
+            	let address = `http://${aliveIPs[i]}:${port}/jsonrpc`;
+            	var result = await this.pingKodi(address);
+            	if (result){ kodis.push(address); }
             }
+
+            callback(kodis);
         });
     }
 
+    /**
+	* Pings an address to check if it is responding and running Kodi.
+	* @param {string} address Address to ping
+	* @returns {Promise} Promise which resolves with eithe true or false depending on if the ping succeeded or failed.
+    */
+   	pingKodi(address){
+   		return new Promise((resolve) => {
+   			request(address, (err, res, body) => {
+            	if (!err && res.statusCode == 200){
+            		resolve(true);
+            	} else {
+            		resolve(false);
+            	}
+            });
+   		});
+   	}
 
     /**
      * Sends a request to Kodi with body as the body of the request, handles errors as needed
