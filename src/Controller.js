@@ -24,17 +24,19 @@ class Controller {
      */
     scanForKodis(callback, port = 8080) {
         let kodis = [];
-
         netList.scan({}, async (err, arr) => {
             let aliveIPs = arr.filter(ip => ip.alive);
-
+            console.log(`Found: ${aliveIPs.length} IP's`);
             for (let i = 0; i < aliveIPs.length; i++) {
-            	let address = `http://${aliveIPs[i]}:${port}/jsonrpc`;
-            	var result = await this.pingKodi(address);
-            	if (result){ kodis.push(address); }
+                console.log(`Trying IP: ${aliveIPs[i].ip}`);
+            	let address = `http://${aliveIPs[i].ip}:${port}/jsonrpc`;
+            	await this.pingKodi(address).then((x) => {                    
+                    if(x){
+                        console.log("Found a Kodi instance!");
+                        kodis.push(aliveIPs[i].ip);
+                    }    
+                }).then(() => {if(i === (aliveIPs.length - 1)){callback(err, kodis)}});
             }
-
-            callback(kodis);
         });
     }
 
