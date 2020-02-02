@@ -37,11 +37,16 @@ describe("Controller", () => {
             .reply(200, "success");
 
             let c = new Controller();
-            c.scanForKodis((kodis) => {
-                kodis.should.containEql(localIP);
-                done();
+            c.scanForKodis((err, kodis) => {
+                if (err){
+                    done(err);
+                } else if (kodis.indexOf(localIP) > -1) {
+                    done();
+                } else {
+                    done("could not find localIP in kodis array");
+                }
             });
-        });
+        }).timeout(60000); // this test might take a while to run depending on the network
     });
 
     describe("getActivePlayerID", () => {
