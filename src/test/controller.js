@@ -214,6 +214,28 @@ describe("Controller", () => {
         });
     });
 
+    describe("setVolume", () => {
+        it("should not return an error", (done) => {
+            let c = new Controller();
+
+            nock("http://localhost:8080")
+                .post("/jsonrpc", (body) => {
+                    return body.jsonrpc === RPCVersion && body.method === "Application.SetVolume";
+                })
+                .reply(200, "{\"id\":1,\"jsonrpc\":\"2.0\",\"result\":{\"volume\":25}}");
+
+            setNockVolume();
+
+            c.setVolume((err, volume) => {
+                if (err || !volume) { done(err); }
+                else{
+                    assert.equal(25, volume.volume);
+                    done();
+                }
+            }, 25);
+        });
+    });
+
     describe("volumeUp", () => {
         it("should not return an error", (done) => {
             let c = new Controller();
