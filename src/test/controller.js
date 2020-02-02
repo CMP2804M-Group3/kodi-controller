@@ -39,6 +39,7 @@ describe("Controller", () => {
             let c = new Controller();
             c.scanForKodis((kodis) => {
                 kodis.should.containEql(localIP);
+                done();
             });
         });
     });
