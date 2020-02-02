@@ -1,6 +1,7 @@
 const assert = require("assert"),
     nock = require("nock"),
     sinon = require("sinon"),
+    ip = require("ip"),
     Controller = require("../Controller.js");
 
 const RPCVersion = "2.0";
@@ -25,6 +26,21 @@ describe("Controller", () => {
     after(function(){
         nock.restore();
         nock.cleanAll();
+    });
+
+    describe("scanForKodis", () => {
+        it("should return the ip of the local machine", (done) => {
+            let localIP = ip.address();
+
+            nock(`http://${localIP}:8080`)
+            .get("/jsonrpc")
+            .reply(200, "success");
+
+            let c = new Controller();
+            c.scanForKodis((kodis) => {
+                kodis.should.containEql(localIP);
+            });
+        });
     });
 
     describe("getActivePlayerID", () => {
