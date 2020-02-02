@@ -1,6 +1,4 @@
 const request = require("request");
-const netList = require('network-list');
-const isPortReachable = require('is-port-reachable');
 const RPCVersion = "2.0";
 const ID = 1;
 
