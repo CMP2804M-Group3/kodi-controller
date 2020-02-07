@@ -1,6 +1,6 @@
 {
   "name": "kodi-controller",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Control Kodi from JavaScript!",
   "license": "GPL-3.0",
   "repository": "github:CMP2804M-Group3/kodi-controller",
