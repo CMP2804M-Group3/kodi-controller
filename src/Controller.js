@@ -21,8 +21,9 @@ class Controller {
      * Searches the network for Kodi's on the supplied port
      * @param {Function} callback The callback function called with the params (err, data) with data being a list of ip's and port
      * @param {number} port The port that Kodi is configured for (Default is 8080)
+     * @param timeout The ping timeout
      */
-    scanForKodis(callback, port = 8080) {
+    scanForKodis(callback, port = 8080, timeout = 4000) {
         let kodis = [];
         netList.scan({}, async (err, arr) => {
             let aliveIPs = arr.filter(ip => ip.alive);
@@ -30,7 +31,7 @@ class Controller {
             for (let i = 0; i < aliveIPs.length; i++) {
                 console.log(`Trying IP: ${aliveIPs[i].ip}`);
             	let address = `http://${aliveIPs[i].ip}:${port}/jsonrpc`;
-            	await this.pingKodi(address).then((x) => {                    
+            	await this.pingKodi(address, timeout).then((x) => {
                     if(x){
                         console.log("Found a Kodi instance!");
                         kodis.push(aliveIPs[i].ip);
