@@ -41,14 +41,16 @@ class Controller {
     }
 
     /**
-	* Pings an address to check if it is responding and running Kodi.
-	* @param {string} address Address to ping
-	* @returns {Promise} Promise which resolves with eithe true or false depending on if the ping succeeded or failed.
-    */
-   	pingKodi(address){
+     * Pings an address to check if it is responding and running Kodi.
+     * @param {string} address Address to ping
+     * @param timeout The ping timeout
+     * @returns {Promise} Promise which resolves with eithe true or false depending on if the ping succeeded or failed.
+     */
+   	pingKodi(address, timeout = 4000){
    		return new Promise((resolve) => {
-   			request(address, (err, res, body) => {
-            	if (!err && res.statusCode == 200){
+
+   			request({"url": address, "timeout": timeout}, (err, res, body) => {
+            	if (!err && res.statusCode === 200){
             		resolve(true);
             	} else {
             		resolve(false);
