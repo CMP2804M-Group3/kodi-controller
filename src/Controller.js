@@ -233,6 +233,17 @@ class Controller {
             this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback);
         });
     }
+
+    /**
+     * Toggles shuffle
+     */
+    toggleShuffle(callback=function(){}){
+        this.getActivePlayerID((err, playerID) => {
+            if (err){ callback(err); return; }
+            this.sendRequest("Player.SetShuffle", {playerid: playerID}, callback);
+    });
+    }
+
     /**
      * Skips to next media
      * @param {Function} callback The callback function called with err, callback
