@@ -27,6 +27,7 @@ class Controller {
         let kodis = [];
         netList.scan({}, async (err, arr) => {
             let aliveIPs = arr.filter(ip => ip.alive);
+            if (aliveIPs.length === 0 ) { callback(err, []); }
             console.log(`Found: ${aliveIPs.length} IP's`);
             for (let i = 0; i < aliveIPs.length; i++) {
                 console.log(`Trying IP: ${aliveIPs[i].ip}`);
