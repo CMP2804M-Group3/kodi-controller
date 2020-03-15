@@ -452,6 +452,10 @@ class Controller {
                 return;
             }
 
+            if (!data || !data.currentwindow){
+                callback("could not find currentwindow");
+            }
+
             callback(err, data.currentwindow.label);
         });
     }
