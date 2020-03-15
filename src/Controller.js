@@ -29,40 +29,40 @@ class Controller {
             console.log(`Found: ${aliveIPs.length} IP's`);
             for (let i = 0; i < aliveIPs.length; i++) {
                 console.log(`Trying IP: ${aliveIPs[i].ip}`);
-            	let address = `http://${aliveIPs[i].ip}:${port}/jsonrpc`;
-            	await this.pingKodi(address).then((x) => {                    
+                let address = `http://${aliveIPs[i].ip}:${port}/jsonrpc`;
+                await this.pingKodi(address).then((x) => {
                     if(x){
                         console.log("Found a Kodi instance!");
                         kodis.push(aliveIPs[i].ip);
-                    }    
+                    }
                 }).then(() => {if(i === (aliveIPs.length - 1)){callback(err, kodis)}});
             }
         });
     }
 
     /**
-	* Pings an address to check if it is responding and running Kodi.
-	* @param {string} address Address to ping
-	* @returns {Promise} Promise which resolves with eithe true or false depending on if the ping succeeded or failed.
+    * Pings an address to check if it is responding and running Kodi.
+    * @param {string} address Address to ping
+    * @returns {Promise} Promise which resolves with eithe true or false depending on if the ping succeeded or failed.
     */
-   	pingKodi(address){
-   		return new Promise((resolve) => {
-   			request(address, (err, res, body) => {
-            	if (!err && res.statusCode == 200){
-            		resolve(true);
-            	} else {
-            		resolve(false);
-            	}
+    pingKodi(address){
+        return new Promise((resolve) => {
+            request(address, (err, res, body) => {
+                if (!err && res.statusCode == 200){
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
             });
-   		});
-   	}
+        });
+    }
 
     /**
      * Sends a request to Kodi with body as the body of the request, handles errors as needed
      * @param {string}  method The method we are calling
      * @param {Object} params The parameters for the method
      * @param {Function} callback? Function called when request is finished with arguments of
-     * 		string (err), string (body)
+     *      string (err), string (body)
      */
     sendRequest(method, params, callback) {
         let data = "";
@@ -89,7 +89,6 @@ class Controller {
                 } catch (e) { err = e.error; }
 
                 if (callback){ callback(err, result); }
-
             });
     }
 
@@ -112,12 +111,8 @@ class Controller {
     getActivePlayerID(callback) {
         if (!callback) {throw "Callback must be supplied for getActivePlayerID!"; }
         this.sendRequest("Player.GetActivePlayers", null, (err, data) => {
-            if (err){
-                callback(err);
-                return;
-            }
+            if (err){ callback(err); }
             callback(err, data[0].playerid);
-
         });
     }
 
@@ -237,17 +232,6 @@ class Controller {
             this.sendRequest("Player.PlayPause", {playerid: playerID, play: true}, callback);
         });
     }
-
-    /**
-     * Toggles shuffle
-     */
-    toggleShuffle(callback=function(){}){
-        this.getActivePlayerID((err, playerID) => {
-            if (err){ callback(err); return; }
-            this.sendRequest("Player.SetShuffle", {playerid: playerID}, callback);
-    });
-    }
-
     /**
      * Skips to next media
      * @param {Function} callback The callback function called with err, callback
@@ -276,10 +260,7 @@ class Controller {
      * @param {int} volume The volume to set the player to
      */
     setVolume(callback = function () {}, volume) {
-        this.sendRequest("Application.SetVolume", {"volume": volume}, (err, data) => {
-            if(err) { callback(err); return; }
-            callback(err, data);
-        });
+        this.sendRequest("Application.SetVolume", {"volume": volume}, callback);
     }
 
     /**
@@ -315,7 +296,7 @@ class Controller {
      * Fast forwards
      * @param {Function} callback The callback function called with err, callback
      * @param {number} speed The speed to fast forward with
-     * 		speed has to be in [2, 4, 8, 16, 32]
+     *      speed has to be in [2, 4, 8, 16, 32]
      */
     fastForward(callback = function() {}, speed = 2) {
         let allowedSpeeds = [2, 4, 8, 16, 32];
@@ -333,7 +314,7 @@ class Controller {
      * Rewinds
      * @param {Function} callback The callback function called with err, callback
      * @param {number} speed The speed to rewind by
-     * 		speed has to be in [2, 4, 8, 16, 32]
+     *      speed has to be in [2, 4, 8, 16, 32]
      */
     rewind(callback = function() {}, speed = 2) {
         let allowedSpeeds = [2, 4, 8, 16, 32];
@@ -350,10 +331,7 @@ class Controller {
      * @param {Function} callback The callback function called with the params (err, data) with data being the volume
      */
     showInfo(callback = function () {}) {
-        this.sendRequest("Input.Info", null, (err, data) => {
-            if(err) { callback(err); return; }
-            callback(err, data);
-        });
+        this.sendRequest("Input.Info", null, callback);
     }
 
     /**
@@ -361,10 +339,7 @@ class Controller {
      * @param {Function} callback The callback function called with the params (err, data) with data being the volume
      */
     toggleMute(callback = function () {}) {
-        this.sendRequest("Application.SetMute", {"mute": "toggle"}, (err, data) => {
-            if(err) { callback(err); return; }
-            callback(err, data);
-        });
+        this.sendRequest("Application.SetMute", {"mute": "toggle"}, callback);
     }
 
     /**
@@ -372,10 +347,7 @@ class Controller {
      * @param {Function} callback The callback function called with the params (err, data) with data being the volume
      */
     toggleFullscreen(callback = function () {}) {
-        this.sendRequest("GUI.SetFullscreen", {"fullscreen": "toggle"}, (err, data) => {
-            if(err) { callback(err); return; }
-            callback(err, data);
-        });
+        this.sendRequest("GUI.SetFullscreen", {"fullscreen": "toggle"}, callback);
     }
 
     /**
@@ -383,13 +355,82 @@ class Controller {
      * @param {Function} callback The callback function called with the params (err, data) with data being the volume
      */
     quit(callback = function () {}) {
-        this.sendRequest("Application.Quit", null, (err, data) => {
-            if(err) { callback(err); return; }
-            callback(err, data);
-        });
+        this.sendRequest("Application.Quit", null, callback);
     }
 
+    /**
+    * Shows the context menu
+    * @param {Function} callback The callback function called with the params (err, data)
+    */
+    inputContextMenu(callback = function(){}){
+        this.sendRequest("Input.ContextMenu", null, callback);
+    }
 
+    /**
+    * Execute a specific action
+    * @param {string} action Action to be executed (see https://kodi.wiki/view/JSON-RPC_API/v8#Input.Action)
+    * @param {Function} callback The callback function called with the params (err, data)
+    */
+    inputAction(iAction, callback = function(){}){
+        this.sendRequest("Input.ExecuteAction", {action: iAction}, callback);
+    }
+
+    /**
+    * Goes to home window in GUI
+    * @param {Function} callback The callback function called with the params (err, data)
+    */
+    inputHome(callback = function(){}){
+        this.sendRequest("Input.Home", null, callback);
+    }
+
+    /**
+    * Shows the information dialog
+    * @param {Function} callback The callback function called with the params (err, data)
+    */
+    inputInfo(callback = function(){}){
+        this.sendRequest("Input.Info", null, callback);
+    }
+
+    /**
+    * Select an item in GUI
+    * @param {Function} callback The callback function called with the params (err, data)
+    */
+    inputSelect(callback = function(){}){
+        this.sendRequest("Input.Select", null, callback);
+    }
+
+    /**
+    * Sends generic (unicode) text to be inserted into a text box in the GUI
+    * @param {string} text Text to be sent
+    * @param {Function} callback The callback function called with the params (err, data)
+    */
+    inputSendText(str, callback = function(){}){
+        this.sendRequest("Input.SendText", {text: str}, callback);
+    }
+
+    /**
+    * Show codec information of the playing item
+    * @param {Function} callback The callback function called with the params (err, data)
+    */
+    inputShowCodec(callback = function(){}){
+        this.sendRequest("Input.ShowCodec", null, callback);
+    }
+
+    /**
+    * Shows the on-screen display for the current player
+    * @param {Function} callback The callback function called with the params (err, data)
+    */
+    inputShowOSD(callback = function(){}){
+        this.sendRequest("Input.ShowOSD", null, callback);
+    }
+
+    /**
+    * Show player process information of the playing item, like video decoder, pixel format, pvr signal strength, ...
+    * @param {Function} callback The callback function called with the params (err, data)
+    */
+    inputShowPlayerProcessInfo(callback = function(){}){
+        this.sendRequest("Input.ShowPlayerProcessInfo", null, callback);
+    }
 }
 
 module.exports = Controller;
