@@ -523,7 +523,7 @@ describe("Controller", () => {
 
             nock("http://localhost:8080")
                 .post("/jsonrpc", (body) => {
-                    return body.jsonrpc === RPCVersion && body.method === "Input.ExecuteAction" && body.params.action == "close";
+                    return body.jsonrpc === RPCVersion && body.method === "Input.ExecuteAction" && body.params.action === "close";
                 })
                 .reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
 
@@ -599,7 +599,7 @@ describe("Controller", () => {
 
             nock("http://localhost:8080")
                 .post("/jsonrpc", (body) => {
-                    return body.jsonrpc === RPCVersion && body.method === "Input.SendText" && body.params.text == "test123";
+                    return body.jsonrpc === RPCVersion && body.method === "Input.SendText" && body.params.text === "test123";
                 })
                 .reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
 
