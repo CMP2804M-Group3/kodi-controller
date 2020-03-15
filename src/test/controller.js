@@ -668,4 +668,23 @@ describe("Controller", () => {
             });
         });
     });
+
+    describe("getCurrentWindow", () => {
+        it("should not return an error", (done) => {
+            let c = new Controller();
+
+            nock("http://localhost:8080")
+                .post("/jsonrpc", (body) => {
+                    return body.jsonrpc === RPCVersion && body.method === "GUI.GetProperties" && body.params.properties.includes("currentwindow");
+                })
+                .reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"currentwindow\":{\"id\": 12901,\"label\":\"Fullscreen OSD\"}}");
+
+            setNockPlayerID();
+
+            c.getCurrentWindow((err, response) => {
+                if (err || !response) { done(err); }
+                else {done();}
+            });
+        });
+    });
 });

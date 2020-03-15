@@ -431,6 +431,30 @@ class Controller {
     inputShowPlayerProcessInfo(callback = function(){}){
         this.sendRequest("Input.ShowPlayerProcessInfo", null, callback);
     }
+
+    /**
+    * Retrieves the values of the given properites
+    * @param {Array} properties Array of properies to retrieve (see https://kodi.wiki/view/JSON-RPC_API/v8#GUI.Property.Name)
+    * @param {Function} callback The callback function called with the params (err, data)
+    */
+    getProperties(props, callback = function(){}){
+        this.sendRequest("GUI.GetProperties", {properties: props}, callback);
+    }
+
+    /**
+    * Gets the active window the user is using
+    * @param {Function} callback The callback function called with the params (err, data) (see https://kodi.wiki/view/JSON-RPC_API/v8#GUI.Property.Value)
+    */
+    getCurrentWindow(callback = function(){}){
+        this.getProperties(["currentwindow"], (err, data) => {
+            if (err){
+                callback(err);
+                return;
+            }
+
+            callback(err, data.currentwindow.label);
+        });
+    }
 }
 
 module.exports = Controller;
