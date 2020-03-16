@@ -111,7 +111,11 @@ class Controller {
     getActivePlayerID(callback) {
         if (!callback) {throw "Callback must be supplied for getActivePlayerID!"; }
         this.sendRequest("Player.GetActivePlayers", null, (err, data) => {
-            if (err){ callback(err); }
+            if (err){ 
+                callback(err); 
+                return;        
+            }
+            
             callback(err, data[0].playerid);
         });
     }
