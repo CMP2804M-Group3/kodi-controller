@@ -97,7 +97,11 @@ class Controller {
      * @param {Function} callback The callback function called with the params (err, data)
      */
     shutdown(callback = function () {}) {
-        this.sendRequest("System.Shutdown", {playerid: playerID}, callback);
+        this.getActivePlayerID((err, playerID) => {
+            if (err){ callback(err); return; }
+            this.sendRequest("System.Shutdown", {playerid: playerID}, callback);
+        });
+
     }
 
     /**
@@ -105,7 +109,10 @@ class Controller {
      * @param {Function} callback The callback function called with the params (err, data)
      */
     restart(callback = function () {}) {
-        this.sendRequest("System.Reboot", {playerid: playerID}, callback);
+        this.getActivePlayerID((err, playerID) => {
+            if (err){ callback(err); return; }
+            this.sendRequest("System.Reboot", {playerid: playerID}, callback);
+        });
     }
 
     /**
