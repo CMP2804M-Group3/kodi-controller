@@ -93,6 +93,29 @@ class Controller {
     }
 
     /**
+     * Shutdown
+     * @param {Function} callback The callback function called with the params (err, data)
+     */
+    shutdown(callback = function () {}) {
+        this.getActivePlayerID((err, playerID) => {
+            if (err){ callback(err); return; }
+            this.sendRequest("System.Shutdown", {playerid: playerID}, callback);
+        });
+
+    }
+
+    /**
+     * Restart
+     * @param {Function} callback The callback function called with the params (err, data)
+     */
+    restart(callback = function () {}) {
+        this.getActivePlayerID((err, playerID) => {
+            if (err){ callback(err); return; }
+            this.sendRequest("System.Reboot", {playerid: playerID}, callback);
+        });
+    }
+
+    /**
      * Gets the current players volume
      * @param {Function} callback The callback function called with the params (err, data) with data being the volume
      */
