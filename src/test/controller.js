@@ -115,7 +115,7 @@ describe("Controller", () => {
 
             setNockPlayerID();
 
-            c.restart((err, response) => {
+            c.repeatOff((err, response) => {
                 if (err || !response) { done(err); }
                 else {done();}
             });
@@ -134,7 +134,7 @@ describe("Controller", () => {
 
             setNockPlayerID();
 
-            c.restart((err, response) => {
+            c.repeatOne((err, response) => {
                 if (err || !response) { done(err); }
                 else {done();}
             });
@@ -153,7 +153,7 @@ describe("Controller", () => {
 
             setNockPlayerID();
 
-            c.restart((err, response) => {
+            c.repeatAll((err, response) => {
                 if (err || !response) { done(err); }
                 else {done();}
             });
