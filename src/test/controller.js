@@ -103,6 +103,63 @@ describe("Controller", () => {
         });
     });
 
+    describe("repeatOff", () => {
+        it("should not return an error", (done) => {
+            let c = new Controller();
+
+            nock("http://localhost:8080")
+                .post("/jsonrpc", (body) => {
+                    return body.jsonrpc === RPCVersion && body.method === "Player.SetRepeat";
+                })
+                .reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+            setNockPlayerID();
+
+            c.repeatOff((err, response) => {
+                if (err || !response) { done(err); }
+                else {done();}
+            });
+        });
+    });
+
+    describe("repeatOne", () => {
+        it("should not return an error", (done) => {
+            let c = new Controller();
+
+            nock("http://localhost:8080")
+                .post("/jsonrpc", (body) => {
+                    return body.jsonrpc === RPCVersion && body.method === "Player.SetRepeat";
+                })
+                .reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+            setNockPlayerID();
+
+            c.repeatOne((err, response) => {
+                if (err || !response) { done(err); }
+                else {done();}
+            });
+        });
+    });
+
+    describe("repeatAll", () => {
+        it("should not return an error", (done) => {
+            let c = new Controller();
+
+            nock("http://localhost:8080")
+                .post("/jsonrpc", (body) => {
+                    return body.jsonrpc === RPCVersion && body.method === "Player.SetRepeat";
+                })
+                .reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+            setNockPlayerID();
+
+            c.repeatAll((err, response) => {
+                if (err || !response) { done(err); }
+                else {done();}
+            });
+        });
+    });
+
     describe("getVolume", () => {
         it("should return the volume of the player", (done) => {
             let c = new Controller();

@@ -97,11 +97,7 @@ class Controller {
      * @param {Function} callback The callback function called with the params (err, data)
      */
     shutdown(callback = function () {}) {
-        this.getActivePlayerID((err, playerID) => {
-            if (err){ callback(err); return; }
-            this.sendRequest("System.Shutdown", {playerid: playerID}, callback);
-        });
-
+        this.sendRequest("System.Shutdown", null, callback);
     }
 
     /**
@@ -109,10 +105,40 @@ class Controller {
      * @param {Function} callback The callback function called with the params (err, data)
      */
     restart(callback = function () {}) {
+        this.sendRequest("System.Reboot", null, callback);
+    }
+
+    /**
+     * Repeat Off
+     * @param {Function} callback The callback function called with the params (err, data)
+     */
+    repeatOff(callback = function () {}) {
         this.getActivePlayerID((err, playerID) => {
             if (err){ callback(err); return; }
-            this.sendRequest("System.Reboot", {playerid: playerID}, callback);
-        });
+            this.sendRequest("Player.SetRepeat", {playerid: playerID, "repeat":"off" }, callback);
+        }); 
+    }
+
+    /**
+     * Repeat One
+     * @param {Function} callback The callback function called with the params (err, data)
+     */
+    repeatOne(callback = function () {}) {
+        this.getActivePlayerID((err, playerID) => {
+            if (err){ callback(err); return; }
+            this.sendRequest("Player.SetRepeat", {playerid: playerID, "repeat":"one" }, callback);
+        }); 
+    }
+
+    /**
+     * Repeat All
+     * @param {Function} callback The callback function called with the params (err, data)
+     */
+    repeatAll(callback = function () {}) {
+        this.getActivePlayerID((err, playerID) => {
+            if (err){ callback(err); return; }
+            this.sendRequest("Player.SetRepeat", {playerid: playerID, "repeat":"all" }, callback);
+        }); 
     }
 
     /**
