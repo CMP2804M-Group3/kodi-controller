@@ -98,7 +98,6 @@ class Controller {
      */
     shutdown(callback = function () {}) {
         this.sendRequest("System.Shutdown", callback);
-
     }
 
     /**
@@ -107,7 +106,6 @@ class Controller {
      */
     restart(callback = function () {}) {
         this.sendRequest("System.Reboot", callback);
-
     }
 
     /**
@@ -142,7 +140,6 @@ class Controller {
             this.sendRequest("Player.SetRepeat", {playerid: playerID, "repeat":"all" }, callback);
         }); 
     }
-
 
     /**
      * Gets the current players volume
