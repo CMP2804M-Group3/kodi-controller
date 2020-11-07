@@ -71,13 +71,32 @@ describe("Controller", () => {
 
             nock("http://localhost:8080")
                 .post("/jsonrpc", (body) => {
-                    return body.jsonrpc === RPCVersion && body.method === "System.Shutdown.Up";
+                    return body.jsonrpc === RPCVersion && body.method === "System.Shutdown";
                 })
                 .reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
 
             setNockPlayerID();
 
             c.shutdown((err, response) => {
+                if (err || !response) { done(err); }
+                else {done();}
+            });
+        });
+    });
+
+    describe("restart", () => {
+        it("should not return an error", (done) => {
+            let c = new Controller();
+
+            nock("http://localhost:8080")
+                .post("/jsonrpc", (body) => {
+                    return body.jsonrpc === RPCVersion && body.method === "System.Reboot";
+                })
+                .reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+            setNockPlayerID();
+
+            c.restart((err, response) => {
                 if (err || !response) { done(err); }
                 else {done();}
             });

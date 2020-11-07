@@ -100,6 +100,13 @@ class Controller {
         this.sendRequest("System.Shutdown", {playerid: playerID}, callback);
     }
 
+    /**
+     * Restart
+     * @param {Function} callback The callback function called with the params (err, data)
+     */
+    restart(callback = function () {}) {
+        this.sendRequest("System.Reboot", {playerid: playerID}, callback);
+    }
 
     /**
      * Gets the current players volume
