@@ -19,7 +19,7 @@ func((arg1, arg2) => {
 ```js
 if (condition)
 {
-	// do somnething
+	// do something
 }
 else
 {
