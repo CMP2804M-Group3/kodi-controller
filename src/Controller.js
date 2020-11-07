@@ -97,7 +97,7 @@ class Controller {
      * @param {Function} callback The callback function called with the params (err, data)
      */
     shutdown(callback = function () {}) {
-        this.sendRequest("System.Shutdown", {}, callback);
+        this.sendRequest("System.Shutdown", null, callback);
     }
 
     /**
@@ -105,7 +105,7 @@ class Controller {
      * @param {Function} callback The callback function called with the params (err, data)
      */
     restart(callback = function () {}) {
-        this.sendRequest("System.Reboot", {}, callback);
+        this.sendRequest("System.Reboot", null, callback);
     }
 
     /**
