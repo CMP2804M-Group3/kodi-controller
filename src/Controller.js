@@ -93,6 +93,15 @@ class Controller {
     }
 
     /**
+     * Shutdown
+     * @param {Function} callback The callback function called with the params (err, data)
+     */
+    shutdown(callback = function () {}) {
+        this.sendRequest("System.Shutdown", {playerid: playerID}, callback);
+    }
+
+
+    /**
      * Gets the current players volume
      * @param {Function} callback The callback function called with the params (err, data) with data being the volume
      */

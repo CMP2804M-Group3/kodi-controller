@@ -65,6 +65,25 @@ describe("Controller", () => {
         });
     });
 
+    describe("shutdown", () => {
+        it("should not return an error", (done) => {
+            let c = new Controller();
+
+            nock("http://localhost:8080")
+                .post("/jsonrpc", (body) => {
+                    return body.jsonrpc === RPCVersion && body.method === "System.Shutdown.Up";
+                })
+                .reply(200, "{\"id\":1,\"jsonrpc\": \"2.0\",\"result\":\"OK\"}");
+
+            setNockPlayerID();
+
+            c.shutdown((err, response) => {
+                if (err || !response) { done(err); }
+                else {done();}
+            });
+        });
+    });
+
     describe("getVolume", () => {
         it("should return the volume of the player", (done) => {
             let c = new Controller();
