@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "jsdoc": "^3.6.7",
-    "mocha": "^7.0.1",
+    "mocha": "^10.2.0",
     "nock": "^11.7.2",
     "sinon": "^8.1.1"
   },
